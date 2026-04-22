@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Monzo ZA – Pay Insight Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+<title>PaySmart ZA – Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -12,26 +12,44 @@ body {
   background: #EDE8E3;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
   font-family: 'Nunito Sans', -apple-system, sans-serif;
 }
 
+.demo-banner {
+  width: 375px;
+  background: #1A1A1A;
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.demo-banner-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+.demo-banner-text { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.65); line-height: 1.55; }
+.demo-banner-text strong { color: white; font-weight: 800; }
+.demo-tag {
+  display: inline-block; background: #FF4F38; color: white;
+  font-size: 10px; font-weight: 800; border-radius: 6px;
+  padding: 2px 7px; margin-right: 6px; letter-spacing: 0.3px; vertical-align: middle;
+}
+
 :root {
   --coral:     #FF4F38;
   --coral-lt:  #FFF1EF;
   --coral-md:  #FFD0CA;
-  --coral-dk:  #CC3020;
   --text:      #111111;
   --muted:     #888888;
-  --subtle:    #BBBBBB;
   --bg:        #FFFFFF;
   --surface:   #F6F6F6;
-  --surface2:  #F0F0F0;
   --border:    #E8E8E8;
   --green:     #009E6B;
   --green-lt:  #E5F6F0;
+  --green-dk:  #006B48;
   --red:       #D93025;
   --red-lt:    #FDECEA;
   --blue:      #1966D2;
@@ -40,42 +58,33 @@ body {
   --amber-lt:  #FFF3E0;
   --purple:    #6B3FA0;
   --purple-lt: #F2ECFA;
+  --sage:      #00C38A;
+  --sage-lt:   #E6FAF5;
+  --sage-dk:   #007A56;
 }
 
 /* ─── PHONE SHELL ─── */
 .phone-shell {
-  width: 375px;
-  height: 780px;
+  width: 375px; height: 780px;
   background: var(--bg);
   border-radius: 52px;
   border: 9px solid #111;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
   position: relative;
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,0.06),
-    0 0 0 1px rgba(0,0,0,0.12),
-    0 40px 80px rgba(0,0,0,0.25),
-    0 10px 20px rgba(0,0,0,0.12);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.12), 0 40px 80px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.12);
 }
 .phone-shell::before {
-  content: '';
-  position: absolute;
+  content: ''; position: absolute;
   top: 0; left: 50%; transform: translateX(-50%);
-  width: 126px; height: 30px;
-  background: #111;
-  border-radius: 0 0 22px 22px;
-  z-index: 100;
+  width: 126px; height: 30px; background: #111;
+  border-radius: 0 0 22px 22px; z-index: 200;
 }
-/* side buttons */
 .phone-shell::after {
-  content: '';
-  position: absolute;
+  content: ''; position: absolute;
   right: -12px; top: 120px;
   width: 4px; height: 60px;
-  background: #222;
-  border-radius: 0 2px 2px 0;
+  background: #222; border-radius: 0 2px 2px 0;
 }
 
 /* ─── STATUS BAR ─── */
@@ -83,35 +92,20 @@ body {
   display: flex; justify-content: space-between; align-items: center;
   padding: 8px 26px 0;
   font-size: 12px; font-weight: 800; color: var(--text);
-  flex-shrink: 0;
-  margin-top: 22px;
-  position: relative; z-index: 10;
+  flex-shrink: 0; margin-top: 22px; position: relative; z-index: 10;
 }
 .status-icons { display: flex; gap: 5px; align-items: center; }
 
-/* ─── SCREEN SWITCHER ─── */
-.screen {
-  display: none;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0;
-}
+/* ─── SCREENS ─── */
+.screen { display: none; flex-direction: column; flex: 1; min-height: 0; }
 .screen.active { display: flex; }
-
-/* ─── SCROLLABLE BODY ─── */
-.scroll-body {
-  overflow-y: auto;
-  flex: 1;
-  min-height: 0;
-  -webkit-overflow-scrolling: touch;
-}
+.scroll-body { overflow-y: auto; flex: 1; min-height: 0; -webkit-overflow-scrolling: touch; }
 .scroll-body::-webkit-scrollbar { display: none; }
 
 /* ─── TOP BAR ─── */
 .top-bar {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 20px 6px;
-  flex-shrink: 0;
+  padding: 10px 20px 6px; flex-shrink: 0;
 }
 .top-bar-title { font-size: 18px; font-weight: 900; color: var(--text); letter-spacing: -0.4px; }
 .back-btn {
@@ -125,89 +119,42 @@ body {
   display: flex; align-items: center; justify-content: center;
 }
 
-/* ─── HOME HEADER ─── */
+/* ─── HOME HEADER CARD ─── */
 .home-header {
   margin: 8px 16px 0;
-  background: var(--coral);
-  border-radius: 22px;
-  padding: 20px;
-  color: white;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
+  background: var(--coral); border-radius: 22px;
+  padding: 20px; color: white;
+  flex-shrink: 0; position: relative; overflow: hidden;
 }
 .home-header::after {
-  content: '';
-  position: absolute;
-  right: -30px; top: -30px;
-  width: 130px; height: 130px;
-  background: rgba(255,255,255,0.07);
-  border-radius: 50%;
+  content: ''; position: absolute; right: -30px; top: -30px;
+  width: 130px; height: 130px; background: rgba(255,255,255,0.07); border-radius: 50%;
 }
 .home-header::before {
-  content: '';
-  position: absolute;
-  right: 30px; bottom: -40px;
-  width: 100px; height: 100px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 50%;
+  content: ''; position: absolute; right: 30px; bottom: -40px;
+  width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;
 }
-.hh-greeting { font-size: 13px; font-weight: 600; opacity: 0.8; margin-bottom: 2px; }
-.hh-name { font-size: 17px; font-weight: 800; margin-bottom: 14px; }
 .hh-balance-label { font-size: 11px; font-weight: 700; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
 .hh-balance { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; margin-bottom: 14px; }
 .hh-row { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
 .hh-acct { font-size: 12px; font-weight: 700; opacity: 0.75; }
-.hh-pill {
-  background: rgba(255,255,255,0.22);
-  border-radius: 20px; padding: 4px 11px;
-  font-size: 11px; font-weight: 800;
-  backdrop-filter: blur(4px);
-}
+.hh-pill { background: rgba(255,255,255,0.22); border-radius: 20px; padding: 4px 11px; font-size: 11px; font-weight: 800; }
 
 /* ─── QUICK ACTIONS ─── */
-.quick-actions {
-  display: flex; gap: 0;
-  padding: 16px 16px 4px;
-  flex-shrink: 0;
-}
-.qa-btn {
-  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
-  cursor: pointer; background: none; border: none; padding: 4px 0;
-}
-.qa-icon {
-  width: 46px; height: 46px; border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 20px;
-}
+.quick-actions { display: flex; padding: 16px 16px 4px; flex-shrink: 0; }
+.qa-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 4px 0; }
+.qa-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 .qa-label { font-size: 11px; font-weight: 700; color: var(--text); }
 
-/* ─── POTS ─── */
-.section-header {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 20px 8px;
-  flex-shrink: 0;
-}
+/* ─── SECTION HEADER ─── */
+.section-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px 8px; }
 .section-title { font-size: 14px; font-weight: 800; color: var(--text); }
-.section-link { font-size: 12px; font-weight: 700; color: var(--coral); }
+.section-link { font-size: 12px; font-weight: 700; color: var(--coral); cursor: pointer; }
 
-.pots-scroll {
-  display: flex; gap: 10px;
-  padding: 0 16px 4px;
-  overflow-x: auto;
-  flex-shrink: 0;
-}
+/* ─── POTS ─── */
+.pots-scroll { display: flex; gap: 10px; padding: 0 16px 4px; overflow-x: auto; }
 .pots-scroll::-webkit-scrollbar { display: none; }
-.pot-card {
-  flex-shrink: 0; width: 110px;
-  background: var(--surface);
-  border-radius: 16px;
-  padding: 12px;
-  border: 1px solid var(--border);
-  cursor: pointer;
-  transition: transform 0.12s;
-}
-.pot-card:active { transform: scale(0.97); }
+.pot-card { flex-shrink: 0; width: 110px; background: var(--surface); border-radius: 16px; padding: 12px; border: 1px solid var(--border); cursor: pointer; }
 .pot-emoji { font-size: 20px; margin-bottom: 6px; }
 .pot-name { font-size: 11px; font-weight: 800; color: var(--text); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pot-amt { font-size: 13px; font-weight: 800; color: var(--text); }
@@ -215,15 +162,8 @@ body {
 .pot-bar-bg { height: 3px; background: var(--border); border-radius: 2px; margin-top: 6px; }
 .pot-bar-fill { height: 3px; border-radius: 2px; background: var(--coral); }
 
-/* ─── SPENDING SUMMARY ─── */
-.spend-card {
-  margin: 4px 16px 0;
-  background: var(--surface);
-  border-radius: 16px;
-  padding: 14px 16px;
-  border: 1px solid var(--border);
-  flex-shrink: 0;
-}
+/* ─── SPEND CARD ─── */
+.spend-card { margin: 4px 16px 0; background: var(--surface); border-radius: 16px; padding: 14px 16px; border: 1px solid var(--border); }
 .spend-title { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; }
 .spend-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
 .spend-row:last-child { margin-bottom: 0; }
@@ -236,120 +176,65 @@ body {
 /* ─── TXN LIST ─── */
 .txn-list { padding: 0 16px 8px; }
 .txn-date-group { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; padding: 12px 4px 6px; }
-
 .txn-item {
   display: flex; align-items: center; gap: 12px;
-  padding: 10px 4px;
-  cursor: pointer;
+  padding: 10px 4px; cursor: pointer;
   border-bottom: 1px solid var(--border);
-  transition: background 0.1s;
-  border-radius: 0;
 }
 .txn-item:last-child { border-bottom: none; }
-.txn-item:active { background: var(--surface); border-radius: 10px; margin: 0 -4px; padding: 10px 8px; }
 .txn-item.highlight {
-  background: var(--coral-lt);
-  border: 1.5px solid var(--coral-md);
-  border-radius: 14px;
-  padding: 11px 12px;
-  margin-bottom: 2px;
+  background: var(--coral-lt); border: 1.5px solid var(--coral-md);
+  border-radius: 14px; padding: 11px 12px; margin-bottom: 2px;
 }
-.txn-item.highlight + .txn-item { border-top: none; }
-
-.txn-icon {
-  width: 40px; height: 40px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; flex-shrink: 0;
-}
-
+.txn-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
 .txn-info { flex: 1; min-width: 0; }
 .txn-name { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .txn-sub { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 1px; }
-
 .txn-right { text-align: right; flex-shrink: 0; }
 .txn-amt { font-size: 14px; font-weight: 800; }
 .txn-amt.cr { color: var(--green); }
 .txn-amt.db { color: var(--text); }
-.txn-tag {
-  font-size: 10px; font-weight: 800; color: var(--coral);
-  background: var(--coral-md); border-radius: 6px;
-  padding: 2px 7px; margin-top: 3px; display: inline-block;
-}
+.txn-tag { font-size: 10px; font-weight: 800; color: var(--coral); background: var(--coral-md); border-radius: 6px; padding: 2px 7px; margin-top: 3px; display: inline-block; }
 
 /* ─── NAV BAR ─── */
 .nav-bar {
   display: flex; justify-content: space-around; align-items: center;
-  padding: 8px 0 22px;
-  border-top: 1px solid var(--border);
-  background: var(--bg);
-  flex-shrink: 0;
+  padding: 8px 0 22px; border-top: 1px solid var(--border);
+  background: var(--bg); flex-shrink: 0;
 }
-.nav-item {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 3px; cursor: pointer; padding: 2px 12px;
-  position: relative;
-}
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 2px 12px; position: relative; }
 .nav-item svg { width: 22px; height: 22px; }
 .nav-item span { font-size: 10px; font-weight: 700; color: var(--muted); }
 .nav-item.active span { color: var(--coral); }
-.nav-dot {
-  position: absolute; bottom: -2px;
-  width: 4px; height: 4px; border-radius: 50%; background: var(--coral);
-  display: none;
-}
+.nav-dot { position: absolute; bottom: -2px; width: 4px; height: 4px; border-radius: 50%; background: var(--coral); display: none; }
 .nav-item.active .nav-dot { display: block; }
 
-/* ─── INSIGHT HEADER CARD ─── */
+/* ─── INSIGHT SCREEN ─── */
 .insight-hero {
-  margin: 4px 16px 12px;
-  background: var(--coral);
-  border-radius: 22px;
-  padding: 20px;
-  color: white;
-  flex-shrink: 0;
-  position: relative; overflow: hidden;
+  margin: 4px 16px 12px; background: var(--coral);
+  border-radius: 22px; padding: 20px; color: white;
+  flex-shrink: 0; position: relative; overflow: hidden;
 }
-.insight-hero::after {
-  content: ''; position: absolute;
-  right: -20px; top: -20px;
-  width: 100px; height: 100px;
-  background: rgba(255,255,255,0.08);
-  border-radius: 50%;
-}
+.insight-hero::after { content: ''; position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.08); border-radius: 50%; }
 .ih-label { font-size: 11px; font-weight: 800; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
 .ih-amt { font-size: 32px; font-weight: 900; letter-spacing: -1px; line-height: 1; margin-bottom: 4px; }
 .ih-date { font-size: 12px; font-weight: 600; opacity: 0.72; margin-bottom: 14px; }
-.ih-pills { display: flex; gap: 8px; position: relative; z-index: 1; }
-.ih-pill {
-  background: rgba(255,255,255,0.2);
-  border-radius: 20px; padding: 5px 11px;
-  font-size: 11px; font-weight: 800;
-}
+.ih-pills { display: flex; gap: 8px; position: relative; z-index: 1; flex-wrap: wrap; }
+.ih-pill { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 5px 11px; font-size: 11px; font-weight: 800; }
 .ih-pill.neg { background: rgba(0,0,0,0.15); }
 
-/* ─── INSIGHT BODY ─── */
 .net-banner {
-  margin: 0 16px 12px;
-  background: var(--red-lt);
-  border: 1.5px solid #F8CECA;
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex; align-items: center; gap: 12px;
+  margin: 0 16px 12px; background: var(--red-lt);
+  border: 1.5px solid #F8CECA; border-radius: 16px;
+  padding: 14px 16px; display: flex; align-items: center; gap: 12px;
 }
 .nb-icon { font-size: 26px; }
 .nb-vs { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
 .nb-val { font-size: 22px; font-weight: 900; color: var(--red); letter-spacing: -0.5px; line-height: 1.1; }
 .nb-sub { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 2px; }
 
-.stat-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 8px; padding: 0 16px; margin-bottom: 12px;
-}
-.stat-tile {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px; padding: 13px;
-}
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 16px; margin-bottom: 12px; }
+.stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 13px; }
 .st-label { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
 .st-val { font-size: 18px; font-weight: 900; letter-spacing: -0.4px; }
 .st-val.neg { color: var(--red); }
@@ -357,29 +242,13 @@ body {
 .st-val.neu { color: var(--text); }
 .st-sub { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 2px; }
 
-.info-card {
-  margin: 0 16px 10px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 16px; overflow: hidden;
-}
-.ic-head {
-  font-size: 11px; font-weight: 800; color: var(--muted);
-  text-transform: uppercase; letter-spacing: 0.7px;
-  padding: 10px 14px 8px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-}
-.ic-row {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border);
-}
+.info-card { margin: 0 16px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+.ic-head { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; padding: 10px 14px 8px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.ic-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
 .ic-row:last-child { border-bottom: none; }
 .ic-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
 .ic-dot.neg { background: var(--red); }
 .ic-dot.pos { background: var(--green); }
-.ic-dot.neu { background: var(--muted); }
 .ic-name { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; line-height: 1.35; }
 .ic-name small { font-size: 11px; font-weight: 600; color: var(--muted); display: block; margin-top: 1px; }
 .ic-val { font-size: 13px; font-weight: 900; flex-shrink: 0; }
@@ -387,31 +256,223 @@ body {
 .ic-val.pos { color: var(--green); }
 .ic-val.neu { color: var(--text); }
 
-.total-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 11px 14px;
-  border-bottom: 1px solid var(--border);
-}
+.total-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--border); }
 .total-row:last-child { border-bottom: none; background: var(--surface); }
 .tr-label { font-size: 13px; font-weight: 700; color: var(--muted); }
 .total-row:last-child .tr-label { color: var(--text); font-weight: 800; }
 .tr-val { font-size: 13px; font-weight: 900; }
 
 .tip-chip {
-  margin: 0 16px 20px;
-  background: var(--blue-lt);
-  border: 1.5px solid #C2D8FA;
-  border-radius: 14px;
-  padding: 12px 14px;
-  display: flex; gap: 10px; align-items: flex-start;
+  margin: 0 16px 16px; background: var(--blue-lt);
+  border: 1.5px solid #C2D8FA; border-radius: 14px;
+  padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start;
 }
 .tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
 .tip-text { font-size: 12px; font-weight: 600; color: #1045A0; line-height: 1.55; }
 .tip-text strong { font-weight: 800; }
+
+/* ─── EWA BUTTON ─── */
+.ewa-banner {
+  margin: 0 16px 16px;
+  background: linear-gradient(135deg, #009E6B 0%, #00C38A 100%);
+  border-radius: 18px; padding: 16px 18px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; position: relative; overflow: hidden;
+}
+.ewa-banner::after { content: ''; position: absolute; right: -20px; top: -20px; width: 90px; height: 90px; background: rgba(255,255,255,0.08); border-radius: 50%; }
+.ewa-icon { font-size: 28px; flex-shrink: 0; }
+.ewa-text { flex: 1; }
+.ewa-title { font-size: 14px; font-weight: 900; color: white; margin-bottom: 2px; }
+.ewa-sub { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.8); }
+.ewa-arrow { color: white; font-size: 20px; font-weight: 900; position: relative; z-index: 1; }
+
+/* ══════════════════════════════════════
+   OVERLAY / MODAL SYSTEM
+══════════════════════════════════════ */
+.overlay {
+  display: none;
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 150;
+  align-items: flex-end;
+  justify-content: center;
+  backdrop-filter: blur(2px);
+}
+.overlay.active { display: flex; }
+
+.sheet {
+  width: 100%; background: var(--bg);
+  border-radius: 24px 24px 0 0;
+  padding: 0 0 28px;
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
+
+.sheet-header { padding: 16px 20px 12px; border-bottom: 1px solid var(--border); }
+.sheet-title { font-size: 17px; font-weight: 900; color: var(--text); letter-spacing: -0.3px; }
+.sheet-sub { font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+.sheet-body { padding: 16px 20px 0; }
+
+/* ─── CONSENT SHEET ─── */
+.consent-provider {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--sage-lt); border: 1.5px solid #9DECD6;
+  border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;
+}
+.sage-logo {
+  width: 40px; height: 40px; background: var(--sage); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 900; color: white; letter-spacing: -0.5px; flex-shrink: 0;
+}
+.cp-name { font-size: 14px; font-weight: 800; color: var(--text); }
+.cp-sub { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 1px; }
+
+.consent-item {
+  display: flex; gap: 10px; align-items: flex-start;
+  margin-bottom: 12px;
+}
+.consent-check {
+  width: 20px; height: 20px; border-radius: 6px;
+  background: var(--green-lt); border: 1.5px solid var(--green);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+}
+.consent-text { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
+.consent-text strong { font-weight: 800; }
+
+.consent-legal {
+  background: var(--surface); border-radius: 10px; padding: 10px 12px;
+  font-size: 11px; font-weight: 600; color: var(--muted); line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.btn-primary {
+  width: 100%; padding: 15px; border: none; border-radius: 14px;
+  background: var(--coral); color: white;
+  font-size: 15px; font-weight: 900; cursor: pointer;
+  font-family: inherit; letter-spacing: -0.2px;
+  transition: opacity 0.15s;
+}
+.btn-primary:active { opacity: 0.85; }
+.btn-secondary {
+  width: 100%; padding: 13px; border: none; border-radius: 14px;
+  background: none; color: var(--muted);
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  font-family: inherit; margin-top: 8px;
+}
+
+/* ─── LINKING POPUP ─── */
+.linking-sheet .sheet-body { text-align: center; padding: 20px 20px 0; }
+
+.link-animation {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin: 8px auto 20px; position: relative; height: 72px;
+}
+.link-node {
+  width: 56px; height: 56px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 900; z-index: 1;
+}
+.link-node.bank { background: var(--coral); color: white; }
+.link-node.sage { background: var(--sage); color: white; }
+.link-line {
+  flex: 1; height: 3px; background: var(--border); position: relative; max-width: 80px;
+  overflow: visible;
+}
+.link-line-fill {
+  height: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--coral), var(--sage));
+  width: 0%; transition: width 1.8s ease;
+}
+.link-pulse {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--sage); left: -5px;
+  animation: pulse-move 1.8s ease forwards;
+  opacity: 0;
+}
+@keyframes pulse-move {
+  0%   { left: 0%; opacity: 1; }
+  100% { left: 100%; opacity: 0.2; }
+}
+
+.link-status { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.link-status-sub { font-size: 13px; font-weight: 600; color: var(--muted); line-height: 1.4; margin-bottom: 20px; }
+
+.step-list { text-align: left; margin-bottom: 20px; }
+.step-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px; font-weight: 700; color: var(--muted);
+}
+.step-item:last-child { border-bottom: none; }
+.step-item.done { color: var(--text); }
+.step-item.active { color: var(--blue); }
+.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+.step-icon.pending { background: var(--border); color: var(--muted); }
+.step-icon.done { background: var(--green-lt); color: var(--green); }
+.step-icon.active { background: var(--blue-lt); color: var(--blue); }
+.step-icon.spin {
+  background: var(--blue-lt);
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── SUCCESS SHEET ─── */
+.success-sheet .sheet-body { text-align: center; padding: 20px 20px 0; }
+.success-icon { font-size: 52px; margin-bottom: 12px; }
+.success-title { font-size: 20px; font-weight: 900; color: var(--text); letter-spacing: -0.4px; margin-bottom: 6px; }
+.success-sub { font-size: 14px; font-weight: 600; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+.success-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--sage-lt); border: 1.5px solid #9DECD6;
+  border-radius: 20px; padding: 6px 14px;
+  font-size: 12px; font-weight: 800; color: var(--sage-dk);
+  margin-bottom: 20px;
+}
+
+/* ─── EWA SHEET ─── */
+.ewa-amount-display {
+  background: var(--green-lt); border: 1.5px solid #9DE6CB;
+  border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 16px;
+}
+.ewa-big-amt { font-size: 32px; font-weight: 900; color: var(--green-dk); letter-spacing: -1px; }
+.ewa-amt-label { font-size: 12px; font-weight: 700; color: var(--green); margin-top: 2px; }
+
+.ewa-breakdown { margin-bottom: 16px; }
+.ewa-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.ewa-row:last-child { border-bottom: none; font-weight: 800; }
+.ewa-row-label { font-weight: 600; color: var(--muted); }
+.ewa-row:last-child .ewa-row-label { color: var(--text); }
+.ewa-row-val { font-weight: 800; color: var(--text); }
+.ewa-row:last-child .ewa-row-val { color: var(--green-dk); font-size: 15px; }
+
+.ewa-warning {
+  background: var(--amber-lt); border: 1.5px solid #FECF7A;
+  border-radius: 12px; padding: 10px 12px;
+  font-size: 12px; font-weight: 600; color: #7A4500; line-height: 1.5;
+  margin-bottom: 16px; display: flex; gap: 8px; align-items: flex-start;
+}
+
+/* ─── EWA CONFIRM SHEET ─── */
+.ewa-confirm { text-align: center; padding: 8px 0 0; }
+.ewa-confirm-icon { font-size: 44px; margin-bottom: 10px; }
+.ewa-confirm-title { font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 6px; }
+.ewa-confirm-sub { font-size: 13px; font-weight: 600; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
 </style>
 </head>
 <body>
 
+<div class="demo-banner">
+  <div class="demo-banner-icon">🔬</div>
+  <div class="demo-banner-text">
+    <span class="demo-tag">DEMO</span><strong>Concept prototype — not a real product.</strong><br>
+    Built by <strong>Data &amp; AI: Will Taggart</strong> · For information and discussion purposes only.
+  </div>
+</div>
 <div class="phone-shell">
 
   <!-- STATUS BAR -->
@@ -431,9 +492,9 @@ body {
     </div>
   </div>
 
-  <!-- ════════════════════════════════
+  <!-- ═══════════════════════
        HOME SCREEN
-  ════════════════════════════════ -->
+  ═══════════════════════ -->
   <div class="screen active" id="homeScreen">
     <div class="top-bar" style="padding-top:6px;">
       <div>
@@ -441,12 +502,8 @@ body {
         <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-0.3px;">Thabo 👋</div>
       </div>
       <div style="display:flex;gap:8px;">
-        <button class="icon-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
-        </button>
-        <button class="icon-btn" style="background:var(--coral);">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-        </button>
+        <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></button>
+        <button class="icon-btn" style="background:var(--coral);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
       </div>
     </div>
 
@@ -455,194 +512,78 @@ body {
       <div class="hh-balance">R 42,318.40</div>
       <div class="hh-row">
         <span class="hh-acct">Cheque ···· 4521</span>
-        <span class="hh-pill">FNB-style CA</span>
+        <span class="hh-pill">Current Account</span>
       </div>
     </div>
 
-    <!-- Quick actions -->
     <div class="quick-actions">
-      <button class="qa-btn">
-        <div class="qa-icon" style="background:#EBF2FF;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        </div>
-        <span class="qa-label">Add money</span>
-      </button>
-      <button class="qa-btn">
-        <div class="qa-icon" style="background:#E5F6F0;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </div>
-        <span class="qa-label">Send</span>
-      </button>
-      <button class="qa-btn">
-        <div class="qa-icon" style="background:var(--coral-lt);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-        </div>
-        <span class="qa-label">Pay</span>
-      </button>
-      <button class="qa-btn">
-        <div class="qa-icon" style="background:var(--purple-lt);">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
-        </div>
-        <span class="qa-label">History</span>
-      </button>
+      <button class="qa-btn"><div class="qa-icon" style="background:#EBF2FF;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><span class="qa-label">Add money</span></button>
+      <button class="qa-btn"><div class="qa-icon" style="background:var(--green-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><span class="qa-label">Send</span></button>
+      <button class="qa-btn"><div class="qa-icon" style="background:var(--coral-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><span class="qa-label">Pay</span></button>
+      <button class="qa-btn"><div class="qa-icon" style="background:var(--purple-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><span class="qa-label">History</span></button>
     </div>
 
     <div class="scroll-body">
-      <!-- Pots -->
-      <div class="section-header">
-        <span class="section-title">My Pots</span>
-        <span class="section-link">See all</span>
-      </div>
+      <div class="section-header"><span class="section-title">My Pots</span><span class="section-link">See all</span></div>
       <div class="pots-scroll">
-        <div class="pot-card">
-          <div class="pot-emoji">🏠</div>
-          <div class="pot-name">Home deposit</div>
-          <div class="pot-amt">R 38,500</div>
-          <div class="pot-target">of R 80,000</div>
-          <div class="pot-bar-bg"><div class="pot-bar-fill" style="width:48%"></div></div>
-        </div>
-        <div class="pot-card">
-          <div class="pot-emoji">✈️</div>
-          <div class="pot-name">Holiday</div>
-          <div class="pot-amt">R 12,200</div>
-          <div class="pot-target">of R 20,000</div>
-          <div class="pot-bar-bg"><div class="pot-bar-fill" style="width:61%"></div></div>
-        </div>
-        <div class="pot-card">
-          <div class="pot-emoji">🚗</div>
-          <div class="pot-name">Car service</div>
-          <div class="pot-amt">R 4,800</div>
-          <div class="pot-target">of R 6,000</div>
-          <div class="pot-bar-bg"><div class="pot-bar-fill" style="width:80%"></div></div>
-        </div>
-        <div class="pot-card" style="background:var(--coral-lt);border-color:var(--coral-md);">
-          <div class="pot-emoji">➕</div>
-          <div class="pot-name" style="color:var(--coral);">New pot</div>
-          <div class="pot-amt" style="color:var(--muted);font-size:11px;font-weight:600;">Start saving</div>
-        </div>
+        <div class="pot-card"><div class="pot-emoji">🏠</div><div class="pot-name">Home deposit</div><div class="pot-amt">R 38,500</div><div class="pot-target">of R 80,000</div><div class="pot-bar-bg"><div class="pot-bar-fill" style="width:48%"></div></div></div>
+        <div class="pot-card"><div class="pot-emoji">✈️</div><div class="pot-name">Holiday</div><div class="pot-amt">R 12,200</div><div class="pot-target">of R 20,000</div><div class="pot-bar-bg"><div class="pot-bar-fill" style="width:61%"></div></div></div>
+        <div class="pot-card"><div class="pot-emoji">🚗</div><div class="pot-name">Car service</div><div class="pot-amt">R 4,800</div><div class="pot-target">of R 6,000</div><div class="pot-bar-bg"><div class="pot-bar-fill" style="width:80%"></div></div></div>
+        <div class="pot-card" style="background:var(--coral-lt);border-color:var(--coral-md);"><div class="pot-emoji">➕</div><div class="pot-name" style="color:var(--coral);">New pot</div><div class="pot-amt" style="color:var(--muted);font-size:11px;font-weight:600;">Start saving</div></div>
       </div>
 
-      <!-- Spending this month -->
-      <div class="section-header">
-        <span class="section-title">Spending this month</span>
-        <span class="section-link">Details</span>
-      </div>
+      <div class="section-header"><span class="section-title">Spending this month</span><span class="section-link">Details</span></div>
       <div class="spend-card">
         <div class="spend-title">April 2025</div>
-        <div class="spend-row">
-          <span class="spend-cat-icon">🛒</span>
-          <span class="spend-cat-name">Groceries</span>
-          <div class="spend-bar-wrap"><div class="spend-bar" style="width:72%;background:var(--blue);"></div></div>
-          <span class="spend-amt">R 3,240</span>
-        </div>
-        <div class="spend-row">
-          <span class="spend-cat-icon">🏠</span>
-          <span class="spend-cat-name">Bills</span>
-          <div class="spend-bar-wrap"><div class="spend-bar" style="width:58%;background:var(--purple);"></div></div>
-          <span class="spend-amt">R 2,590</span>
-        </div>
-        <div class="spend-row">
-          <span class="spend-cat-icon">🍔</span>
-          <span class="spend-cat-name">Eating out</span>
-          <div class="spend-bar-wrap"><div class="spend-bar" style="width:34%;background:var(--amber);"></div></div>
-          <span class="spend-amt">R 1,520</span>
-        </div>
-        <div class="spend-row">
-          <span class="spend-cat-icon">🚗</span>
-          <span class="spend-cat-name">Transport</span>
-          <div class="spend-bar-wrap"><div class="spend-bar" style="width:22%;background:var(--green);"></div></div>
-          <span class="spend-amt">R 980</span>
-        </div>
+        <div class="spend-row"><span class="spend-cat-icon">🛒</span><span class="spend-cat-name">Groceries</span><div class="spend-bar-wrap"><div class="spend-bar" style="width:72%;background:var(--blue);"></div></div><span class="spend-amt">R 3,240</span></div>
+        <div class="spend-row"><span class="spend-cat-icon">🏠</span><span class="spend-cat-name">Bills</span><div class="spend-bar-wrap"><div class="spend-bar" style="width:58%;background:var(--purple);"></div></div><span class="spend-amt">R 2,590</span></div>
+        <div class="spend-row"><span class="spend-cat-icon">🍔</span><span class="spend-cat-name">Eating out</span><div class="spend-bar-wrap"><div class="spend-bar" style="width:34%;background:var(--amber);"></div></div><span class="spend-amt">R 1,520</span></div>
+        <div class="spend-row"><span class="spend-cat-icon">🚗</span><span class="spend-cat-name">Transport</span><div class="spend-bar-wrap"><div class="spend-bar" style="width:22%;background:var(--green);"></div></div><span class="spend-amt">R 980</span></div>
       </div>
 
-      <!-- Recent transactions -->
-      <div class="section-header">
-        <span class="section-title">Recent</span>
-        <span class="section-link" onclick="goTo('txnScreen')">See all</span>
-      </div>
+      <div class="section-header"><span class="section-title">Recent</span><span class="section-link" onclick="goTo('txnScreen')">See all</span></div>
       <div class="txn-list">
-        <div class="txn-item highlight" onclick="goTo('insightScreen')">
+        <div class="txn-item highlight" onclick="showConsent()">
           <div class="txn-icon" style="background:#E5F6F0;">💳</div>
-          <div class="txn-info">
-            <div class="txn-name">Salary Payment</div>
-            <div class="txn-sub">1 Apr · Employer</div>
-          </div>
-          <div class="txn-right">
-            <div class="txn-amt cr">+R 35,991.05</div>
-            <div class="txn-tag">✦ Insights</div>
-          </div>
+          <div class="txn-info"><div class="txn-name">Salary Payment</div><div class="txn-sub">1 Apr · Employer</div></div>
+          <div class="txn-right"><div class="txn-amt cr">+R 35,991.05</div><div class="txn-tag">✦ Insights</div></div>
         </div>
         <div class="txn-item">
           <div class="txn-icon" style="background:#F3E8FF;">🛍</div>
-          <div class="txn-info">
-            <div class="txn-name">Woolworths Food</div>
-            <div class="txn-sub">3 Apr · Groceries</div>
-          </div>
+          <div class="txn-info"><div class="txn-name">Woolworths Food</div><div class="txn-sub">3 Apr · Groceries</div></div>
           <div class="txn-right"><div class="txn-amt db">−R 1,240.00</div></div>
         </div>
         <div class="txn-item">
-          <div class="txn-icon" style="background:var(--coral-lt);">🏠</div>
-          <div class="txn-info">
-            <div class="txn-name">Electricity</div>
-            <div class="txn-sub">5 Apr · Bills</div>
-          </div>
+          <div class="txn-icon" style="background:var(--coral-lt);">⚡️</div>
+          <div class="txn-info"><div class="txn-name">City Power</div><div class="txn-sub">5 Apr · Bills</div></div>
           <div class="txn-right"><div class="txn-amt db">−R 890.00</div></div>
         </div>
       </div>
     </div>
 
     <div class="nav-bar">
-      <div class="nav-item active" onclick="goTo('homeScreen')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
-        <span style="color:var(--coral);">Home</span>
-        <div class="nav-dot"></div>
-      </div>
-      <div class="nav-item" onclick="goTo('txnScreen')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-        <span>Payments</span>
-        <div class="nav-dot"></div>
-      </div>
-      <div class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <span>Explore</span>
-        <div class="nav-dot"></div>
-      </div>
-      <div class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
-        <span>Account</span>
-        <div class="nav-dot"></div>
-      </div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span style="color:var(--coral);">Home</span><div class="nav-dot"></div></div>
+      <div class="nav-item" onclick="goTo('txnScreen')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span>Payments</span><div class="nav-dot"></div></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Explore</span><div class="nav-dot"></div></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
     </div>
   </div>
 
-  <!-- ════════════════════════════════
+  <!-- ═══════════════════════
        TRANSACTIONS SCREEN
-  ════════════════════════════════ -->
+  ═══════════════════════ -->
   <div class="screen" id="txnScreen">
     <div class="top-bar">
-      <button class="back-btn" onclick="goTo('homeScreen')">
-        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Home
-      </button>
+      <button class="back-btn" onclick="goTo('homeScreen')"><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Home</button>
       <div class="top-bar-title">Transactions</div>
-      <button class="icon-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg>
-      </button>
+      <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg></button>
     </div>
 
-    <!-- Balance strip -->
     <div style="margin:0 16px 14px;background:var(--surface);border-radius:14px;padding:12px 16px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
-      <div>
-        <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;">Balance</div>
-        <div style="font-size:22px;font-weight:900;letter-spacing:-0.6px;color:var(--text);">R 42,318.40</div>
-      </div>
-      <div style="text-align:right;">
-        <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px;">April spend</div>
-        <div style="font-size:16px;font-weight:800;color:var(--red);">−R 9,274.00</div>
-      </div>
+      <div><div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;">Balance</div><div style="font-size:22px;font-weight:900;letter-spacing:-0.6px;color:var(--text);">R 42,318.40</div></div>
+      <div style="text-align:right;"><div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px;">April spend</div><div style="font-size:16px;font-weight:800;color:var(--red);">−R 9,274.00</div></div>
     </div>
 
-    <!-- Month tabs -->
     <div style="display:flex;gap:6px;padding:0 16px 12px;flex-shrink:0;overflow-x:auto;">
       <div style="background:var(--coral);color:white;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:800;white-space:nowrap;">Apr 2025</div>
       <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;">Mar 2025</div>
@@ -653,110 +594,44 @@ body {
     <div class="scroll-body">
       <div class="txn-list">
         <div class="txn-date-group">1 April</div>
-        <div class="txn-item highlight" onclick="goTo('insightScreen')">
+        <div class="txn-item highlight" onclick="showConsent()">
           <div class="txn-icon" style="background:#E5F6F0;">💳</div>
-          <div class="txn-info">
-            <div class="txn-name">Salary Payment</div>
-            <div class="txn-sub">Employer · Income</div>
-          </div>
-          <div class="txn-right">
-            <div class="txn-amt cr">+R 35,991.05</div>
-            <div class="txn-tag">✦ Insights</div>
-          </div>
+          <div class="txn-info"><div class="txn-name">Salary Payment</div><div class="txn-sub">Employer · Income</div></div>
+          <div class="txn-right"><div class="txn-amt cr">+R 35,991.05</div><div class="txn-tag">✦ Insights</div></div>
         </div>
-
         <div class="txn-date-group">3 April</div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:#F3E8FF;">🛍</div>
-          <div class="txn-info"><div class="txn-name">Woolworths Food</div><div class="txn-sub">Groceries · Waterfront</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 1,240.00</div></div>
-        </div>
-
+        <div class="txn-item"><div class="txn-icon" style="background:#F3E8FF;">🛍</div><div class="txn-info"><div class="txn-name">Woolworths Food</div><div class="txn-sub">Groceries · Waterfront</div></div><div class="txn-right"><div class="txn-amt db">−R 1,240.00</div></div></div>
         <div class="txn-date-group">5 April</div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:var(--coral-lt);">⚡️</div>
-          <div class="txn-info"><div class="txn-name">City Power</div><div class="txn-sub">Electricity · Debit order</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 890.00</div></div>
-        </div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:var(--blue-lt);">💧</div>
-          <div class="txn-info"><div class="txn-name">Johannesburg Water</div><div class="txn-sub">Utilities · Debit order</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 440.00</div></div>
-        </div>
-
+        <div class="txn-item"><div class="txn-icon" style="background:var(--coral-lt);">⚡️</div><div class="txn-info"><div class="txn-name">City Power</div><div class="txn-sub">Electricity · Debit order</div></div><div class="txn-right"><div class="txn-amt db">−R 890.00</div></div></div>
+        <div class="txn-item"><div class="txn-icon" style="background:var(--blue-lt);">💧</div><div class="txn-info"><div class="txn-name">Johannesburg Water</div><div class="txn-sub">Utilities · Debit order</div></div><div class="txn-right"><div class="txn-amt db">−R 440.00</div></div></div>
         <div class="txn-date-group">7 April</div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:#EEF2FF;">🚗</div>
-          <div class="txn-info"><div class="txn-name">Discovery Insure</div><div class="txn-sub">Car insurance · Debit order</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 1,850.00</div></div>
-        </div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:var(--green-lt);">💊</div>
-          <div class="txn-info"><div class="txn-name">Dischem Pharmacy</div><div class="txn-sub">Health · Sandton</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 312.00</div></div>
-        </div>
-
+        <div class="txn-item"><div class="txn-icon" style="background:#EEF2FF;">🚗</div><div class="txn-info"><div class="txn-name">Discovery Insure</div><div class="txn-sub">Car insurance · Debit order</div></div><div class="txn-right"><div class="txn-amt db">−R 1,850.00</div></div></div>
+        <div class="txn-item"><div class="txn-icon" style="background:var(--green-lt);">💊</div><div class="txn-info"><div class="txn-name">Dischem Pharmacy</div><div class="txn-sub">Health · Sandton</div></div><div class="txn-right"><div class="txn-amt db">−R 312.00</div></div></div>
         <div class="txn-date-group">9 April</div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:var(--amber-lt);">🍔</div>
-          <div class="txn-info"><div class="txn-name">Mr D Food</div><div class="txn-sub">Eating out · Delivery</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 312.00</div></div>
-        </div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:#F3E8FF;">☕</div>
-          <div class="txn-info"><div class="txn-name">Seattle Coffee Co.</div><div class="txn-sub">Eating out · Rosebank</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 86.00</div></div>
-        </div>
-
+        <div class="txn-item"><div class="txn-icon" style="background:var(--amber-lt);">🍔</div><div class="txn-info"><div class="txn-name">Mr D Food</div><div class="txn-sub">Eating out · Delivery</div></div><div class="txn-right"><div class="txn-amt db">−R 312.00</div></div></div>
+        <div class="txn-item"><div class="txn-icon" style="background:#F3E8FF;">☕</div><div class="txn-info"><div class="txn-name">Seattle Coffee Co.</div><div class="txn-sub">Eating out · Rosebank</div></div><div class="txn-right"><div class="txn-amt db">−R 86.00</div></div></div>
         <div class="txn-date-group">11 April</div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:var(--blue-lt);">📱</div>
-          <div class="txn-info"><div class="txn-name">Vodacom</div><div class="txn-sub">Mobile · Debit order</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 699.00</div></div>
-        </div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:var(--green-lt);">🎬</div>
-          <div class="txn-info"><div class="txn-name">Netflix</div><div class="txn-sub">Entertainment · Subscription</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 199.00</div></div>
-        </div>
+        <div class="txn-item"><div class="txn-icon" style="background:var(--blue-lt);">📱</div><div class="txn-info"><div class="txn-name">Vodacom</div><div class="txn-sub">Mobile · Debit order</div></div><div class="txn-right"><div class="txn-amt db">−R 699.00</div></div></div>
+        <div class="txn-item"><div class="txn-icon" style="background:var(--green-lt);">🎬</div><div class="txn-info"><div class="txn-name">Netflix</div><div class="txn-sub">Entertainment · Subscription</div></div><div class="txn-right"><div class="txn-amt db">−R 199.00</div></div></div>
       </div>
     </div>
 
     <div class="nav-bar">
-      <div class="nav-item" onclick="goTo('homeScreen')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
-        <span>Home</span>
-        <div class="nav-dot"></div>
-      </div>
-      <div class="nav-item active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-        <span style="color:var(--coral);">Payments</span>
-        <div class="nav-dot"></div>
-      </div>
-      <div class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <span>Explore</span>
-        <div class="nav-dot"></div>
-      </div>
-      <div class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
-        <span>Account</span>
-        <div class="nav-dot"></div>
-      </div>
+      <div class="nav-item" onclick="goTo('homeScreen')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span>Home</span><div class="nav-dot"></div></div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span style="color:var(--coral);">Payments</span><div class="nav-dot"></div></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Explore</span><div class="nav-dot"></div></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
     </div>
   </div>
 
-  <!-- ════════════════════════════════
+  <!-- ═══════════════════════
        INSIGHT SCREEN
-  ════════════════════════════════ -->
+  ═══════════════════════ -->
   <div class="screen" id="insightScreen">
     <div class="top-bar">
-      <button class="back-btn" onclick="goTo('txnScreen')">
-        <svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Transactions
-      </button>
+      <button class="back-btn" onclick="goTo('txnScreen')"><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Transactions</button>
       <div class="top-bar-title">Pay insight</div>
-      <div style="width:80px;"></div>
+      <div style="width:90px;"></div>
     </div>
 
     <div class="insight-hero">
@@ -764,12 +639,22 @@ body {
       <div class="ih-amt">R 35,991.05</div>
       <div class="ih-date">Received 1 April 2025</div>
       <div class="ih-pills">
-        <div class="ih-pill">Employer payroll</div>
+        <div class="ih-pill">Sage Payroll</div>
         <div class="ih-pill neg">−R 9,134 vs March</div>
       </div>
     </div>
 
     <div class="scroll-body">
+
+      <!-- EWA Banner -->
+      <div class="ewa-banner" onclick="showEwa()">
+        <div class="ewa-icon">💸</div>
+        <div class="ewa-text">
+          <div class="ewa-title">Access R 17,995.52 now</div>
+          <div class="ewa-sub">50% of your salary · R 120 fee · Instant transfer</div>
+        </div>
+        <div class="ewa-arrow">›</div>
+      </div>
 
       <div class="net-banner">
         <div class="nb-icon">📉</div>
@@ -781,95 +666,34 @@ body {
       </div>
 
       <div class="stat-grid">
-        <div class="stat-tile">
-          <div class="st-label">Income change</div>
-          <div class="st-val neg">−R 11,206</div>
-          <div class="st-sub">Gross earnings</div>
-        </div>
-        <div class="stat-tile">
-          <div class="st-label">Tax saved</div>
-          <div class="st-val pos">+R 2,072</div>
-          <div class="st-sub">Offsets the drop</div>
-        </div>
-        <div class="stat-tile">
-          <div class="st-label">PAYE paid</div>
-          <div class="st-val neu">R 8,412</div>
-          <div class="st-sub">Income tax</div>
-        </div>
-        <div class="stat-tile">
-          <div class="st-label">Pension</div>
-          <div class="st-val neu">R 6,000</div>
-          <div class="st-sub">This month</div>
-        </div>
+        <div class="stat-tile"><div class="st-label">Income change</div><div class="st-val neg">−R 11,206</div><div class="st-sub">Gross earnings</div></div>
+        <div class="stat-tile"><div class="st-label">Tax saved</div><div class="st-val pos">+R 2,072</div><div class="st-sub">Offsets the drop</div></div>
+        <div class="stat-tile"><div class="st-label">PAYE paid</div><div class="st-val neu">R 8,412</div><div class="st-sub">Income tax</div></div>
+        <div class="stat-tile"><div class="st-label">Pension</div><div class="st-val neu">R 6,000</div><div class="st-sub">This month</div></div>
       </div>
 
       <div class="info-card">
         <div class="ic-head">Income removed</div>
-        <div class="ic-row">
-          <div class="ic-dot neg"></div>
-          <div class="ic-name">CC OT – Public Holiday Rostered</div>
-          <div class="ic-val neg">−R 4,256</div>
-        </div>
-        <div class="ic-row">
-          <div class="ic-dot neg"></div>
-          <div class="ic-name">Acting Allowance</div>
-          <div class="ic-val neg">−R 4,000</div>
-        </div>
-        <div class="ic-row">
-          <div class="ic-dot neg"></div>
-          <div class="ic-name">Standby Allowance</div>
-          <div class="ic-val neg">−R 2,500</div>
-        </div>
-        <div class="ic-row">
-          <div class="ic-dot neg"></div>
-          <div class="ic-name">Cellphone Allowance (Taxable)</div>
-          <div class="ic-val neg">−R 450</div>
-        </div>
+        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">CC OT – Public Holiday Rostered</div><div class="ic-val neg">−R 4,256</div></div>
+        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Acting Allowance</div><div class="ic-val neg">−R 4,000</div></div>
+        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Standby Allowance</div><div class="ic-val neg">−R 2,500</div></div>
+        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Cellphone Allowance (Taxable)</div><div class="ic-val neg">−R 450</div></div>
       </div>
 
       <div class="info-card">
         <div class="ic-head">Deduction changes</div>
-        <div class="ic-row">
-          <div class="ic-dot pos"></div>
-          <div class="ic-name">PAYE (income tax)<small>Lower taxable income</small></div>
-          <div class="ic-val pos">+R 6,066</div>
-        </div>
-        <div class="ic-row">
-          <div class="ic-dot pos"></div>
-          <div class="ic-name">Medical Aid<small>Reduced contributions</small></div>
-          <div class="ic-val pos">+R 1,600</div>
-        </div>
-        <div class="ic-row">
-          <div class="ic-dot pos"></div>
-          <div class="ic-name">Vitality / Keyfit<small>Removed this month</small></div>
-          <div class="ic-val pos">+R 250</div>
-        </div>
-        <div class="ic-row">
-          <div class="ic-dot neg"></div>
-          <div class="ic-name">Pension Fund<small>Higher contributions</small></div>
-          <div class="ic-val neg">−R 6,000</div>
-        </div>
-        <div class="ic-row">
-          <div class="ic-dot neg"></div>
-          <div class="ic-name">Flexi Fund</div>
-          <div class="ic-val neg">−R 156</div>
-        </div>
+        <div class="ic-row"><div class="ic-dot pos"></div><div class="ic-name">PAYE (income tax)<small>Lower taxable income</small></div><div class="ic-val pos">+R 6,066</div></div>
+        <div class="ic-row"><div class="ic-dot pos"></div><div class="ic-name">Medical Aid<small>Reduced contributions</small></div><div class="ic-val pos">+R 1,600</div></div>
+        <div class="ic-row"><div class="ic-dot pos"></div><div class="ic-name">Vitality / Keyfit<small>Removed this month</small></div><div class="ic-val pos">+R 250</div></div>
+        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Pension Fund<small>Higher contributions</small></div><div class="ic-val neg">−R 6,000</div></div>
+        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Flexi Fund</div><div class="ic-val neg">−R 156</div></div>
       </div>
 
       <div class="info-card">
         <div class="ic-head">How it adds up</div>
-        <div class="total-row">
-          <div class="tr-label">Income change</div>
-          <div class="tr-val" style="color:var(--red);">−R 11,206.00</div>
-        </div>
-        <div class="total-row">
-          <div class="tr-label">Deduction offset</div>
-          <div class="tr-val" style="color:var(--green);">+R 2,071.84</div>
-        </div>
-        <div class="total-row">
-          <div class="tr-label">Net pay change</div>
-          <div class="tr-val" style="color:var(--red);font-size:15px;">−R 9,134.16</div>
-        </div>
+        <div class="total-row"><div class="tr-label">Income change</div><div class="tr-val" style="color:var(--red);">−R 11,206.00</div></div>
+        <div class="total-row"><div class="tr-label">Deduction offset</div><div class="tr-val" style="color:var(--green);">+R 2,071.84</div></div>
+        <div class="total-row"><div class="tr-label">Net pay change</div><div class="tr-val" style="color:var(--red);font-size:15px;">−R 9,134.16</div></div>
       </div>
 
       <div class="tip-chip">
@@ -880,25 +704,156 @@ body {
     </div>
 
     <div class="nav-bar">
-      <div class="nav-item" onclick="goTo('homeScreen')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg>
-        <span>Home</span>
-        <div class="nav-dot"></div>
+      <div class="nav-item" onclick="goTo('homeScreen')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span>Home</span><div class="nav-dot"></div></div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span style="color:var(--coral);">Payments</span><div class="nav-dot"></div></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Explore</span><div class="nav-dot"></div></div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       OVERLAY 1 — CONSENT SHEET
+  ══════════════════════════════════════════ -->
+  <div class="overlay" id="overlayConsent">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">Unlock pay insights</div>
+        <div class="sheet-sub">Your payslip data is processed by Sage. We need your consent to share it securely with your bank.</div>
       </div>
-      <div class="nav-item active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-        <span style="color:var(--coral);">Payments</span>
-        <div class="nav-dot"></div>
+      <div class="sheet-body">
+        <div class="consent-provider">
+          <div class="sage-logo">SAGE</div>
+          <div>
+            <div class="cp-name">Sage Payroll Services</div>
+            <div class="cp-sub">Verified payroll provider · South Africa</div>
+          </div>
+        </div>
+
+        <div class="consent-item">
+          <div class="consent-check"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="consent-text">Share your <strong>employee ID</strong> and payroll reference with your bank</div>
+        </div>
+        <div class="consent-item">
+          <div class="consent-check"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="consent-text">Provide <strong>payslip breakdowns</strong> for salary payments detected in your account</div>
+        </div>
+        <div class="consent-item">
+          <div class="consent-check"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="consent-text">Enable <strong>Earned Wage Access</strong> based on your verified salary</div>
+        </div>
+
+        <div class="consent-legal">
+          Your data is processed under POPIA. You can revoke this consent at any time in Settings. Data is not sold to third parties.
+        </div>
+
+        <button class="btn-primary" onclick="showLinking()">Agree &amp; link my profile</button>
+        <button class="btn-secondary" onclick="closeOverlay('overlayConsent')">Not now</button>
       </div>
-      <div class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <span>Explore</span>
-        <div class="nav-dot"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       OVERLAY 2 — LINKING IN PROGRESS
+  ══════════════════════════════════════════ -->
+  <div class="overlay" id="overlayLinking">
+    <div class="sheet linking-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">Linking your profile</div>
+        <div class="sheet-sub">A secure request is being sent to Sage to link your employee record with your bank account.</div>
       </div>
-      <div class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg>
-        <span>Account</span>
-        <div class="nav-dot"></div>
+      <div class="sheet-body">
+        <div class="link-animation">
+          <div class="link-node bank" style="font-size:9px;font-weight:900;">BANK</div>
+          <div class="link-line"><div class="link-line-fill" id="linkFill"></div><div class="link-pulse" id="linkPulse"></div></div>
+          <div class="link-node sage">SAGE</div>
+        </div>
+
+        <div class="step-list" id="stepList">
+          <div class="step-item done" id="step1"><div class="step-icon done">✓</div>Consent recorded</div>
+          <div class="step-item active" id="step2"><div class="step-icon spin" id="step2icon" style="border: 2px solid var(--blue-lt); border-top-color: var(--blue); border-radius:50%;"></div>Sending request to Sage...</div>
+          <div class="step-item" id="step3"><div class="step-icon pending" id="step3icon">3</div>Matching employee record</div>
+          <div class="step-item" id="step4"><div class="step-icon pending" id="step4icon">4</div>Activating insights</div>
+        </div>
+
+        <button class="btn-secondary" style="color:var(--subtle);font-size:12px;" onclick="closeOverlay('overlayLinking')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       OVERLAY 3 — SUCCESS
+  ══════════════════════════════════════════ -->
+  <div class="overlay" id="overlaySuccess">
+    <div class="sheet success-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-body">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">Profile linked!</div>
+        <div class="success-sub">Your employee record has been verified by Sage. Pay insights and Earned Wage Access are now active on your account.</div>
+        <div class="success-badge">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4l-3.3 2.4 1.3 4L7 9 3.5 11.4l1.3-4L1.5 5h4z" fill="var(--sage)"/></svg>
+          Verified by Sage Payroll
+        </div>
+        <button class="btn-primary" onclick="goToInsight()">View my pay insight</button>
+        <button class="btn-secondary" onclick="closeOverlay('overlaySuccess')">Maybe later</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       OVERLAY 4 — EWA SHEET
+  ══════════════════════════════════════════ -->
+  <div class="overlay" id="overlayEwa">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">Access your earned wages</div>
+        <div class="sheet-sub">Get up to 50% of your verified salary before payday — instantly.</div>
+      </div>
+      <div class="sheet-body">
+        <div class="ewa-amount-display">
+          <div class="ewa-big-amt">R 17,995.52</div>
+          <div class="ewa-amt-label">50% of R 35,991.05 salary</div>
+        </div>
+
+        <div class="ewa-breakdown">
+          <div class="ewa-row"><span class="ewa-row-label">Amount requested</span><span class="ewa-row-val">R 17,995.52</span></div>
+          <div class="ewa-row"><span class="ewa-row-label">Access fee</span><span class="ewa-row-val">−R 120.00</span></div>
+          <div class="ewa-row"><span class="ewa-row-label">Transfer time</span><span class="ewa-row-val">Instant</span></div>
+          <div class="ewa-row"><span class="ewa-row-label">You receive</span><span class="ewa-row-val">R 17,875.52</span></div>
+        </div>
+
+        <div class="ewa-warning">
+          <span>⚠️</span>
+          <span>This amount will be deducted from your next salary payment. Your employer will be notified via Sage Payroll.</span>
+        </div>
+
+        <button class="btn-primary" onclick="showEwaConfirm()">Confirm — get R 17,875.52</button>
+        <button class="btn-secondary" onclick="closeOverlay('overlayEwa')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       OVERLAY 5 — EWA CONFIRM
+  ══════════════════════════════════════════ -->
+  <div class="overlay" id="overlayEwaConfirm">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-body">
+        <div class="ewa-confirm">
+          <div class="ewa-confirm-icon">✅</div>
+          <div class="ewa-confirm-title">Money on its way!</div>
+          <div class="ewa-confirm-sub">R 17,875.52 is being transferred to your account. It should arrive within seconds. R 17,995.52 will be deducted from your next salary.</div>
+          <div style="background:var(--green-lt);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left;">
+            <div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">Transfer summary</div>
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;">R 17,875.52 → Cheque ···· 4521</div>
+            <div style="font-size:12px;font-weight:600;color:var(--muted);">Ref: EWA-20250401-4521</div>
+          </div>
+          <button class="btn-primary" onclick="closeOverlay('overlayEwaConfirm')">Done</button>
+        </div>
       </div>
     </div>
   </div>
@@ -906,9 +861,83 @@ body {
 </div><!-- end phone-shell -->
 
 <script>
+  var insightUnlocked = false;
+
   function goTo(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
+  }
+
+  function showConsent() {
+    if (insightUnlocked) {
+      goTo('txnScreen');
+      goTo('insightScreen');
+      return;
+    }
+    document.getElementById('overlayConsent').classList.add('active');
+  }
+
+  function closeOverlay(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+
+  function showLinking() {
+    closeOverlay('overlayConsent');
+    document.getElementById('overlayLinking').classList.add('active');
+
+    // Animate the link line
+    setTimeout(() => {
+      document.getElementById('linkFill').style.width = '100%';
+    }, 100);
+
+    // Step 2 → 3
+    setTimeout(() => {
+      var s2 = document.getElementById('step2');
+      s2.classList.remove('active'); s2.classList.add('done');
+      document.getElementById('step2icon').outerHTML = '<div class="step-icon done" id="step2icon">✓</div>';
+
+      var s3 = document.getElementById('step3');
+      s3.classList.add('active');
+      document.getElementById('step3icon').outerHTML = '<div class="step-icon spin" id="step3icon" style="border:2px solid var(--blue-lt);border-top-color:var(--blue);border-radius:50%;"></div>';
+    }, 2000);
+
+    // Step 3 → 4
+    setTimeout(() => {
+      var s3 = document.getElementById('step3');
+      s3.classList.remove('active'); s3.classList.add('done');
+      document.getElementById('step3icon').outerHTML = '<div class="step-icon done" id="step3icon">✓</div>';
+
+      var s4 = document.getElementById('step4');
+      s4.classList.add('active');
+      document.getElementById('step4icon').outerHTML = '<div class="step-icon spin" id="step4icon" style="border:2px solid var(--blue-lt);border-top-color:var(--blue);border-radius:50%;"></div>';
+    }, 3800);
+
+    // Done → show success
+    setTimeout(() => {
+      var s4 = document.getElementById('step4');
+      s4.classList.remove('active'); s4.classList.add('done');
+      document.getElementById('step4icon').outerHTML = '<div class="step-icon done" id="step4icon">✓</div>';
+
+      setTimeout(() => {
+        closeOverlay('overlayLinking');
+        document.getElementById('overlaySuccess').classList.add('active');
+        insightUnlocked = true;
+      }, 600);
+    }, 5400);
+  }
+
+  function goToInsight() {
+    closeOverlay('overlaySuccess');
+    goTo('insightScreen');
+  }
+
+  function showEwa() {
+    document.getElementById('overlayEwa').classList.add('active');
+  }
+
+  function showEwaConfirm() {
+    closeOverlay('overlayEwa');
+    document.getElementById('overlayEwaConfirm').classList.add('active');
   }
 </script>
 </body>
