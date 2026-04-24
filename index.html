@@ -6,939 +6,661 @@
 <title>PaySmart ZA – Demo</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{background:#EDE8E3;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;font-family:'Nunito Sans',-apple-system,sans-serif;}
+:root{
+  --coral:#FF4F38;--coral-lt:#FFF1EF;--coral-md:#FFD0CA;
+  --text:#111;--muted:#888;--bg:#fff;--surface:#F6F6F6;--border:#E8E8E8;
+  --green:#009E6B;--green-lt:#E5F6F0;
+  --red:#D93025;--red-lt:#FDECEA;
+  --blue:#1966D2;--blue-lt:#EBF2FF;
+  --amber:#E07B00;--amber-lt:#FFF3E0;
+  --purple:#6B3FA0;--purple-lt:#F2ECFA;
+  --sage:#00A878;--sage-lt:#E5F6F1;--sage-dk:#007A58;
+}
+.phone{width:375px;height:780px;background:var(--bg);border-radius:52px;border:9px solid #111;overflow:hidden;display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px rgba(0,0,0,.12),0 40px 80px rgba(0,0,0,.25);}
+.phone::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:126px;height:30px;background:#111;border-radius:0 0 22px 22px;z-index:100;}
+.status-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 26px 0;font-size:12px;font-weight:800;color:var(--text);flex-shrink:0;margin-top:22px;z-index:10;position:relative;}
+.si{display:flex;gap:5px;align-items:center;}
+.screen{display:none;flex-direction:column;flex:1;min-height:0;}
+.screen.active{display:flex;}
+.scroll{overflow-y:auto;flex:1;min-height:0;}
+.scroll::-webkit-scrollbar{display:none;}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:10px 20px 6px;flex-shrink:0;}
+.topbar-title{font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.4px;}
+.back-btn{display:flex;align-items:center;gap:5px;font-size:15px;font-weight:700;color:var(--coral);border:none;background:none;cursor:pointer;padding:6px 0;}
+.icon-btn{width:34px;height:34px;border-radius:50%;background:var(--surface);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.home-card{margin:8px 16px 0;background:var(--coral);border-radius:22px;padding:20px;color:white;flex-shrink:0;position:relative;overflow:hidden;}
+.home-card::after{content:'';position:absolute;right:-30px;top:-30px;width:130px;height:130px;background:rgba(255,255,255,.07);border-radius:50%;}
+.hc-lbl{font-size:11px;font-weight:700;opacity:.7;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;}
+.hc-amt{font-size:36px;font-weight:900;letter-spacing:-1.5px;line-height:1;margin-bottom:14px;}
+.hc-row{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
+.hc-acct{font-size:12px;font-weight:700;opacity:.75;}
+.hc-pill{background:rgba(255,255,255,.22);border-radius:20px;padding:4px 11px;font-size:11px;font-weight:800;}
+.qa{display:flex;padding:16px 16px 4px;flex-shrink:0;}
+.qa-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;background:none;border:none;padding:4px 0;}
+.qa-icon{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.qa-lbl{font-size:11px;font-weight:700;color:var(--text);}
+.sec-hdr{display:flex;justify-content:space-between;align-items:center;padding:14px 20px 8px;}
+.sec-title{font-size:14px;font-weight:800;color:var(--text);}
+.sec-link{font-size:12px;font-weight:700;color:var(--coral);cursor:pointer;}
+.pots{display:flex;gap:10px;padding:0 16px 4px;overflow-x:auto;}
+.pots::-webkit-scrollbar{display:none;}
+.pot{flex-shrink:0;width:110px;background:var(--surface);border-radius:16px;padding:12px;border:1px solid var(--border);cursor:pointer;}
+.pot-e{font-size:20px;margin-bottom:6px;}
+.pot-n{font-size:11px;font-weight:800;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pot-a{font-size:13px;font-weight:800;color:var(--text);}
+.pot-t{font-size:10px;font-weight:600;color:var(--muted);margin-top:1px;}
+.pot-bg{height:3px;background:var(--border);border-radius:2px;margin-top:6px;}
+.pot-fill{height:3px;border-radius:2px;background:var(--coral);}
+.spend{margin:4px 16px 0;background:var(--surface);border-radius:16px;padding:14px 16px;border:1px solid var(--border);}
+.spend-ttl{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;}
+.spend-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.spend-row:last-child{margin-bottom:0;}
+.sp-ic{font-size:16px;width:28px;text-align:center;}
+.sp-nm{font-size:13px;font-weight:700;color:var(--text);flex:1;}
+.sp-bw{width:80px;height:5px;background:var(--border);border-radius:3px;}
+.sp-b{height:5px;border-radius:3px;}
+.sp-v{font-size:12px;font-weight:800;color:var(--text);width:56px;text-align:right;}
+.txns{padding:0 16px 8px;}
+.txn-grp{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;padding:12px 4px 6px;}
+.txn{display:flex;align-items:center;gap:12px;padding:10px 4px;cursor:pointer;border-bottom:1px solid var(--border);}
+.txn:last-child{border-bottom:none;}
+.txn.hi{background:var(--coral-lt);border:1.5px solid var(--coral-md);border-radius:14px;padding:11px 12px;margin-bottom:2px;}
+.txn-ic{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.txn-inf{flex:1;min-width:0;}
+.txn-nm{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.txn-sb{font-size:11px;font-weight:600;color:var(--muted);margin-top:1px;}
+.txn-r{text-align:right;flex-shrink:0;}
+.txn-am{font-size:14px;font-weight:800;}
+.txn-am.cr{color:var(--green);}
+.txn-am.db{color:var(--text);}
+.txn-tag{font-size:10px;font-weight:800;color:var(--coral);background:var(--coral-md);border-radius:6px;padding:2px 7px;margin-top:3px;display:inline-block;}
+.nav{display:flex;justify-content:space-around;align-items:center;padding:8px 0 22px;border-top:1px solid var(--border);background:var(--bg);flex-shrink:0;}
+.nav-it{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:2px 12px;position:relative;}
+.nav-it svg{width:22px;height:22px;}
+.nav-it span{font-size:10px;font-weight:700;color:var(--muted);}
+.nav-it.on span{color:var(--coral);}
+.nav-dot{position:absolute;bottom:-2px;width:4px;height:4px;border-radius:50%;background:var(--coral);display:none;}
+.nav-it.on .nav-dot{display:block;}
 
-body {
-  background: #EDE8E3;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  font-family: 'Nunito Sans', -apple-system, sans-serif;
-}
+/* INSIGHT */
+.ins-hero{margin:4px 16px 12px;background:var(--coral);border-radius:22px;padding:20px;color:white;flex-shrink:0;position:relative;overflow:hidden;}
+.ins-hero::after{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,.08);border-radius:50%;}
+.ih-lbl{font-size:11px;font-weight:800;opacity:.75;text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px;}
+.ih-amt{font-size:32px;font-weight:900;letter-spacing:-1px;line-height:1;margin-bottom:4px;}
+.ih-dt{font-size:12px;font-weight:600;opacity:.72;margin-bottom:14px;}
+.ih-pills{display:flex;gap:8px;flex-wrap:wrap;position:relative;z-index:1;}
+.ih-pill{background:rgba(255,255,255,.2);border-radius:20px;padding:5px 11px;font-size:11px;font-weight:800;}
+.ih-pill.pos{background:rgba(0,200,100,.3);}
 
-.demo-banner {
-  width: 375px;
-  background: #1A1A1A;
-  border-radius: 14px;
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-.demo-banner-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
-.demo-banner-text { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.65); line-height: 1.55; }
-.demo-banner-text strong { color: white; font-weight: 800; }
-.demo-tag {
-  display: inline-block; background: #FF4F38; color: white;
-  font-size: 10px; font-weight: 800; border-radius: 6px;
-  padding: 2px 7px; margin-right: 6px; letter-spacing: 0.3px; vertical-align: middle;
-}
+/* INSIGHT SUMMARY */
+.ins-summary{margin:0 16px 12px;background:var(--green-lt);border:1.5px solid #B3E8D8;border-radius:16px;padding:14px 16px;}
+.is-title{font-size:12px;font-weight:800;color:var(--sage-dk);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.is-body{font-size:13px;font-weight:600;color:#1A4A38;line-height:1.6;}
+.is-body strong{font-weight:800;}
 
-:root {
-  --coral:     #FF4F38;
-  --coral-lt:  #FFF1EF;
-  --coral-md:  #FFD0CA;
-  --text:      #111111;
-  --muted:     #888888;
-  --bg:        #FFFFFF;
-  --surface:   #F6F6F6;
-  --border:    #E8E8E8;
-  --green:     #009E6B;
-  --green-lt:  #E5F6F0;
-  --green-dk:  #006B48;
-  --red:       #D93025;
-  --red-lt:    #FDECEA;
-  --blue:      #1966D2;
-  --blue-lt:   #EBF2FF;
-  --amber:     #E07B00;
-  --amber-lt:  #FFF3E0;
-  --purple:    #6B3FA0;
-  --purple-lt: #F2ECFA;
-  --sage:      #00C38A;
-  --sage-lt:   #E6FAF5;
-  --sage-dk:   #007A56;
-}
+/* INSIGHT SECTION */
+.ins-sec{margin:0 16px 10px;background:var(--bg);border:1px solid var(--border);border-radius:16px;overflow:hidden;}
+.ins-sec-hd{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;padding:10px 14px 8px;background:var(--surface);border-bottom:1px solid var(--border);}
+.ins-item{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);}
+.ins-item:last-child{border-bottom:none;}
+.ins-dot{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.ins-dot.pos{background:var(--green);}
+.ins-dot.neg{background:var(--red);}
+.ins-dot.neu{background:var(--muted);}
+.ins-nm{font-size:13px;font-weight:700;color:var(--text);flex:1;line-height:1.4;}
+.ins-nm small{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-top:1px;}
+.ins-vl{font-size:13px;font-weight:900;flex-shrink:0;}
+.ins-vl.pos{color:var(--green);}
+.ins-vl.neg{color:var(--red);}
 
-/* ─── PHONE SHELL ─── */
-.phone-shell {
-  width: 375px; height: 780px;
-  background: var(--bg);
-  border-radius: 52px;
-  border: 9px solid #111;
-  overflow: hidden;
-  display: flex; flex-direction: column;
-  position: relative;
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.12), 0 40px 80px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.12);
-}
-.phone-shell::before {
-  content: ''; position: absolute;
-  top: 0; left: 50%; transform: translateX(-50%);
-  width: 126px; height: 30px; background: #111;
-  border-radius: 0 0 22px 22px; z-index: 200;
-}
-.phone-shell::after {
-  content: ''; position: absolute;
-  right: -12px; top: 120px;
-  width: 4px; height: 60px;
-  background: #222; border-radius: 0 2px 2px 0;
-}
+/* TOTAL ROWS */
+.tot-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-bottom:1px solid var(--border);}
+.tot-row:last-child{border-bottom:none;background:var(--green-lt);}
+.tr-l{font-size:13px;font-weight:700;color:var(--muted);}
+.tot-row:last-child .tr-l{color:var(--text);font-weight:800;}
+.tr-v{font-size:13px;font-weight:900;}
 
-/* ─── STATUS BAR ─── */
-.status-bar {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 8px 26px 0;
-  font-size: 12px; font-weight: 800; color: var(--text);
-  flex-shrink: 0; margin-top: 22px; position: relative; z-index: 10;
-}
-.status-icons { display: flex; gap: 5px; align-items: center; }
+/* TIP */
+.tip{margin:0 16px 12px;background:var(--blue-lt);border:1.5px solid #C2D8FA;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;}
+.tip-ic{font-size:18px;flex-shrink:0;margin-top:1px;}
+.tip-tx{font-size:12px;font-weight:600;color:#1045A0;line-height:1.55;}
+.tip-tx strong{font-weight:800;}
 
-/* ─── SCREENS ─── */
-.screen { display: none; flex-direction: column; flex: 1; min-height: 0; }
-.screen.active { display: flex; }
-.scroll-body { overflow-y: auto; flex: 1; min-height: 0; -webkit-overflow-scrolling: touch; }
-.scroll-body::-webkit-scrollbar { display: none; }
+/* EARLY PAY */
+.ep-ban{margin:0 16px 16px;background:linear-gradient(135deg,var(--sage) 0%,#007A58 100%);border-radius:18px;padding:16px;color:white;cursor:pointer;position:relative;overflow:hidden;}
+.ep-ban::after{content:'';position:absolute;right:-20px;top:-20px;width:90px;height:90px;background:rgba(255,255,255,.08);border-radius:50%;}
+.ep-lbl{font-size:10px;font-weight:800;opacity:.8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;}
+.ep-ttl{font-size:17px;font-weight:900;margin-bottom:4px;letter-spacing:-.3px;}
+.ep-sub{font-size:12px;font-weight:600;opacity:.8;margin-bottom:12px;}
+.ep-row{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
+.ep-am{font-size:22px;font-weight:900;letter-spacing:-.5px;}
+.ep-fee{font-size:11px;font-weight:600;opacity:.75;}
+.ep-btn{background:white;color:var(--sage-dk);border-radius:20px;padding:7px 16px;font-size:13px;font-weight:800;border:none;cursor:pointer;}
 
-/* ─── TOP BAR ─── */
-.top-bar {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 10px 20px 6px; flex-shrink: 0;
-}
-.top-bar-title { font-size: 18px; font-weight: 900; color: var(--text); letter-spacing: -0.4px; }
-.back-btn {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 15px; font-weight: 700; color: var(--coral);
-  border: none; background: none; cursor: pointer; padding: 6px 2px;
-}
-.icon-btn {
-  width: 34px; height: 34px; border-radius: 50%;
-  background: var(--surface); border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
+/* OVERLAYS */
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(2px);}
+.overlay.on{display:flex;}
+.overlay.center{align-items:center;padding:20px;}
+.sheet{background:var(--bg);border-radius:28px 28px 0 0;padding:0 0 32px;width:100%;max-height:88%;overflow-y:auto;animation:su .28s ease;}
+.sheet.rd{border-radius:28px;}
+.sheet::-webkit-scrollbar{display:none;}
+@keyframes su{from{transform:translateY(50px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+@keyframes pi{from{transform:scale(.93);opacity:0;}to{transform:scale(1);opacity:1;}}
+.sh-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 20px;}
+.sh-title{font-size:19px;font-weight:900;color:var(--text);padding:0 20px;margin-bottom:6px;letter-spacing:-.3px;}
+.sh-sub{font-size:13px;font-weight:600;color:var(--muted);padding:0 20px;line-height:1.5;margin-bottom:20px;}
+.sage-row{display:flex;align-items:center;gap:10px;padding:0 20px;margin-bottom:20px;}
+.sage-badge{background:var(--sage);color:white;border-radius:10px;padding:6px 12px;font-size:13px;font-weight:900;}
+.sage-ver{font-size:12px;font-weight:700;color:var(--sage-dk);background:var(--sage-lt);border-radius:20px;padding:4px 10px;}
+.con-items{padding:0 20px;margin-bottom:24px;}
+.con-it{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+.con-it:last-child{margin-bottom:0;}
+.con-ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.con-ttl{font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px;}
+.con-desc{font-size:12px;font-weight:600;color:var(--muted);line-height:1.4;}
+.con-legal{margin:0 20px 20px;background:var(--surface);border-radius:12px;padding:12px;font-size:11px;font-weight:600;color:var(--muted);line-height:1.5;}
+.demo-ov{position:absolute;inset:0;background:rgba(10,22,40,.72);z-index:300;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);}
+.demo-ov.on{display:flex;}
+.demo-box{background:white;border-radius:24px;padding:24px 20px 20px;width:100%;animation:pi .25s ease;}
+.demo-badge{display:inline-block;background:#111;color:white;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;border-radius:6px;padding:3px 8px;margin-bottom:14px;}
+.demo-box h3{font-size:16px;font-weight:900;color:var(--text);margin-bottom:8px;letter-spacing:-.3px;}
+.demo-box p{font-size:13px;font-weight:600;color:var(--muted);line-height:1.55;margin-bottom:16px;}
+.api-flow{background:var(--surface);border-radius:14px;padding:14px;margin-bottom:16px;}
+.api-step{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.api-step:last-child{margin-bottom:0;}
+.api-num{width:22px;height:22px;border-radius:50%;background:var(--coral);color:white;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.api-num.s{background:var(--sage);}
+.api-tx{font-size:12px;font-weight:700;color:var(--text);line-height:1.4;}
+.api-tx span{font-size:11px;font-weight:600;color:var(--muted);display:block;}
+.btn{display:block;width:calc(100% - 40px);margin:0 20px 10px;border:none;border-radius:16px;padding:16px;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:-.2px;color:white;}
+.btn.coral{background:var(--coral);}
+.btn.sage{background:var(--sage);}
+.btn.full{width:100%;margin:0;}
+.btn-ghost{display:block;width:calc(100% - 40px);margin:0 20px;background:none;color:var(--muted);border:none;padding:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+.pb-wrap{width:100%;height:6px;background:var(--border);border-radius:3px;overflow:hidden;}
+.pb-fill{height:6px;background:var(--sage);border-radius:3px;width:0%;transition:width .5s ease;}
+.lstep{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
+.lstep:last-child{border-bottom:none;}
+.ls-ic{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.ls-tx{font-size:13px;font-weight:700;color:var(--text);flex:1;}
+.ls-tx small{font-size:11px;font-weight:600;color:var(--muted);display:block;}
+.ls-st{font-size:12px;font-weight:800;}
+.ls-st.done{color:var(--green);}.ls-st.run{color:var(--amber);}.ls-st.wait{color:var(--muted);}
+.adv-hero{background:linear-gradient(135deg,var(--sage) 0%,#007A58 100%);margin:0 20px 20px;border-radius:18px;padding:18px;color:white;}
+.adv-lbl{font-size:11px;font-weight:700;opacity:.75;text-transform:uppercase;letter-spacing:.7px;margin-bottom:4px;}
+.adv-amt{font-size:32px;font-weight:900;letter-spacing:-1px;}
+.adv-sub{font-size:12px;font-weight:600;opacity:.75;margin-top:4px;}
+.fee-row{display:flex;justify-content:space-between;align-items:center;padding:11px 20px;border-bottom:1px solid var(--border);}
+.fee-l{font-size:14px;font-weight:700;color:var(--text);}
+.fee-v{font-size:14px;font-weight:800;color:var(--text);}
+.fee-tot .fee-l{font-weight:800;font-size:15px;}
+.fee-tot .fee-v{font-size:16px;color:var(--sage-dk);}
+.adv-note{margin:16px 20px;background:var(--amber-lt);border:1.5px solid #FAD89A;border-radius:12px;padding:12px;font-size:12px;font-weight:600;color:#7A4800;line-height:1.5;}
+.adv-note strong{font-weight:800;}
+.sc-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
+.sc-row:last-child{border-bottom:none;}
+.sc-l{font-size:13px;font-weight:600;color:var(--muted);}
+.sc-v{font-size:13px;font-weight:800;color:var(--text);}
 
-/* ─── HOME HEADER CARD ─── */
-.home-header {
-  margin: 8px 16px 0;
-  background: var(--coral); border-radius: 22px;
-  padding: 20px; color: white;
-  flex-shrink: 0; position: relative; overflow: hidden;
-}
-.home-header::after {
-  content: ''; position: absolute; right: -30px; top: -30px;
-  width: 130px; height: 130px; background: rgba(255,255,255,0.07); border-radius: 50%;
-}
-.home-header::before {
-  content: ''; position: absolute; right: 30px; bottom: -40px;
-  width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%;
-}
-.hh-balance-label { font-size: 11px; font-weight: 700; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
-.hh-balance { font-size: 36px; font-weight: 900; letter-spacing: -1.5px; line-height: 1; margin-bottom: 14px; }
-.hh-row { display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
-.hh-acct { font-size: 12px; font-weight: 700; opacity: 0.75; }
-.hh-pill { background: rgba(255,255,255,0.22); border-radius: 20px; padding: 4px 11px; font-size: 11px; font-weight: 800; }
+/* ONBOARDING SCREENS */
+.onboard{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:32px 24px;text-align:center;}
+.ob-icon{font-size:52px;margin-bottom:20px;}
+.ob-title{font-size:22px;font-weight:900;color:var(--text);margin-bottom:10px;letter-spacing:-.4px;line-height:1.2;}
+.ob-sub{font-size:14px;font-weight:600;color:var(--muted);line-height:1.6;margin-bottom:28px;}
+.ob-feature{display:flex;align-items:center;gap:12px;background:var(--surface);border-radius:14px;padding:12px 14px;margin-bottom:10px;text-align:left;border:1px solid var(--border);}
+.ob-feat-ic{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.ob-feat-tx{font-size:13px;font-weight:700;color:var(--text);line-height:1.35;}
+.ob-feat-tx small{font-size:11px;font-weight:600;color:var(--muted);font-weight:500;}
+.ob-actions{width:100%;margin-top:4px;}
 
-/* ─── QUICK ACTIONS ─── */
-.quick-actions { display: flex; padding: 16px 16px 4px; flex-shrink: 0; }
-.qa-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 4px 0; }
-.qa-icon { width: 46px; height: 46px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
-.qa-label { font-size: 11px; font-weight: 700; color: var(--text); }
+/* EMPLOYER NOTIF DEMO */
+.notif-card{margin:0 20px 16px;background:var(--surface);border-radius:16px;padding:16px;border:1px solid var(--border);}
+.notif-from{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.notif-avatar{width:38px;height:38px;border-radius:10px;background:var(--amber-lt);border:1px solid rgba(245,158,11,.3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.notif-from-txt{font-size:12px;font-weight:600;color:var(--muted);}
+.notif-from-name{font-size:14px;font-weight:800;color:var(--text);}
+.notif-msg{font-size:13px;font-weight:600;color:var(--text);line-height:1.55;margin-bottom:14px;}
+.notif-actions{display:flex;gap:8px;}
+.notif-btn{flex:1;padding:10px;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;border:none;font-family:inherit;}
+.notif-btn.approve{background:var(--sage);color:white;}
+.notif-btn.decline{background:var(--surface);color:var(--muted);border:1px solid var(--border);}
 
-/* ─── SECTION HEADER ─── */
-.section-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px 8px; }
-.section-title { font-size: 14px; font-weight: 800; color: var(--text); }
-.section-link { font-size: 12px; font-weight: 700; color: var(--coral); cursor: pointer; }
+/* SUCCESS NOTIFICATION */
+.success-notif{margin:0 20px 12px;background:var(--green-lt);border:1.5px solid #B3E8D8;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;}
+.sn-ic{font-size:24px;flex-shrink:0;}
+.sn-tx{font-size:13px;font-weight:700;color:#1A4A38;line-height:1.4;}
+.sn-tx small{font-size:11px;font-weight:600;display:block;margin-top:2px;color:var(--sage-dk);}
 
-/* ─── POTS ─── */
-.pots-scroll { display: flex; gap: 10px; padding: 0 16px 4px; overflow-x: auto; }
-.pots-scroll::-webkit-scrollbar { display: none; }
-.pot-card { flex-shrink: 0; width: 110px; background: var(--surface); border-radius: 16px; padding: 12px; border: 1px solid var(--border); cursor: pointer; }
-.pot-emoji { font-size: 20px; margin-bottom: 6px; }
-.pot-name { font-size: 11px; font-weight: 800; color: var(--text); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pot-amt { font-size: 13px; font-weight: 800; color: var(--text); }
-.pot-target { font-size: 10px; font-weight: 600; color: var(--muted); margin-top: 1px; }
-.pot-bar-bg { height: 3px; background: var(--border); border-radius: 2px; margin-top: 6px; }
-.pot-bar-fill { height: 3px; border-radius: 2px; background: var(--coral); }
-
-/* ─── SPEND CARD ─── */
-.spend-card { margin: 4px 16px 0; background: var(--surface); border-radius: 16px; padding: 14px 16px; border: 1px solid var(--border); }
-.spend-title { font-size: 12px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 10px; }
-.spend-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-.spend-row:last-child { margin-bottom: 0; }
-.spend-cat-icon { font-size: 16px; width: 28px; text-align: center; }
-.spend-cat-name { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; }
-.spend-bar-wrap { width: 80px; height: 5px; background: var(--border); border-radius: 3px; }
-.spend-bar { height: 5px; border-radius: 3px; }
-.spend-amt { font-size: 12px; font-weight: 800; color: var(--text); width: 56px; text-align: right; }
-
-/* ─── TXN LIST ─── */
-.txn-list { padding: 0 16px 8px; }
-.txn-date-group { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; padding: 12px 4px 6px; }
-.txn-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 4px; cursor: pointer;
-  border-bottom: 1px solid var(--border);
-}
-.txn-item:last-child { border-bottom: none; }
-.txn-item.highlight {
-  background: var(--coral-lt); border: 1.5px solid var(--coral-md);
-  border-radius: 14px; padding: 11px 12px; margin-bottom: 2px;
-}
-.txn-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
-.txn-info { flex: 1; min-width: 0; }
-.txn-name { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.txn-sub { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 1px; }
-.txn-right { text-align: right; flex-shrink: 0; }
-.txn-amt { font-size: 14px; font-weight: 800; }
-.txn-amt.cr { color: var(--green); }
-.txn-amt.db { color: var(--text); }
-.txn-tag { font-size: 10px; font-weight: 800; color: var(--coral); background: var(--coral-md); border-radius: 6px; padding: 2px 7px; margin-top: 3px; display: inline-block; }
-
-/* ─── NAV BAR ─── */
-.nav-bar {
-  display: flex; justify-content: space-around; align-items: center;
-  padding: 8px 0 22px; border-top: 1px solid var(--border);
-  background: var(--bg); flex-shrink: 0;
-}
-.nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; padding: 2px 12px; position: relative; }
-.nav-item svg { width: 22px; height: 22px; }
-.nav-item span { font-size: 10px; font-weight: 700; color: var(--muted); }
-.nav-item.active span { color: var(--coral); }
-.nav-dot { position: absolute; bottom: -2px; width: 4px; height: 4px; border-radius: 50%; background: var(--coral); display: none; }
-.nav-item.active .nav-dot { display: block; }
-
-/* ─── INSIGHT SCREEN ─── */
-.insight-hero {
-  margin: 4px 16px 12px; background: var(--coral);
-  border-radius: 22px; padding: 20px; color: white;
-  flex-shrink: 0; position: relative; overflow: hidden;
-}
-.insight-hero::after { content: ''; position: absolute; right: -20px; top: -20px; width: 100px; height: 100px; background: rgba(255,255,255,0.08); border-radius: 50%; }
-.ih-label { font-size: 11px; font-weight: 800; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.7px; margin-bottom: 4px; }
-.ih-amt { font-size: 32px; font-weight: 900; letter-spacing: -1px; line-height: 1; margin-bottom: 4px; }
-.ih-date { font-size: 12px; font-weight: 600; opacity: 0.72; margin-bottom: 14px; }
-.ih-pills { display: flex; gap: 8px; position: relative; z-index: 1; flex-wrap: wrap; }
-.ih-pill { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 5px 11px; font-size: 11px; font-weight: 800; }
-.ih-pill.neg { background: rgba(0,0,0,0.15); }
-
-.net-banner {
-  margin: 0 16px 12px; background: var(--red-lt);
-  border: 1.5px solid #F8CECA; border-radius: 16px;
-  padding: 14px 16px; display: flex; align-items: center; gap: 12px;
-}
-.nb-icon { font-size: 26px; }
-.nb-vs { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-.nb-val { font-size: 22px; font-weight: 900; color: var(--red); letter-spacing: -0.5px; line-height: 1.1; }
-.nb-sub { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 2px; }
-
-.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 16px; margin-bottom: 12px; }
-.stat-tile { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 13px; }
-.st-label { font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
-.st-val { font-size: 18px; font-weight: 900; letter-spacing: -0.4px; }
-.st-val.neg { color: var(--red); }
-.st-val.pos { color: var(--green); }
-.st-val.neu { color: var(--text); }
-.st-sub { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 2px; }
-
-.info-card { margin: 0 16px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-.ic-head { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.7px; padding: 10px 14px 8px; background: var(--surface); border-bottom: 1px solid var(--border); }
-.ic-row { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
-.ic-row:last-child { border-bottom: none; }
-.ic-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-.ic-dot.neg { background: var(--red); }
-.ic-dot.pos { background: var(--green); }
-.ic-name { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; line-height: 1.35; }
-.ic-name small { font-size: 11px; font-weight: 600; color: var(--muted); display: block; margin-top: 1px; }
-.ic-val { font-size: 13px; font-weight: 900; flex-shrink: 0; }
-.ic-val.neg { color: var(--red); }
-.ic-val.pos { color: var(--green); }
-.ic-val.neu { color: var(--text); }
-
-.total-row { display: flex; justify-content: space-between; align-items: center; padding: 11px 14px; border-bottom: 1px solid var(--border); }
-.total-row:last-child { border-bottom: none; background: var(--surface); }
-.tr-label { font-size: 13px; font-weight: 700; color: var(--muted); }
-.total-row:last-child .tr-label { color: var(--text); font-weight: 800; }
-.tr-val { font-size: 13px; font-weight: 900; }
-
-.tip-chip {
-  margin: 0 16px 16px; background: var(--blue-lt);
-  border: 1.5px solid #C2D8FA; border-radius: 14px;
-  padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start;
-}
-.tip-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-.tip-text { font-size: 12px; font-weight: 600; color: #1045A0; line-height: 1.55; }
-.tip-text strong { font-weight: 800; }
-
-/* ─── EWA BUTTON ─── */
-.ewa-banner {
-  margin: 0 16px 16px;
-  background: linear-gradient(135deg, #009E6B 0%, #00C38A 100%);
-  border-radius: 18px; padding: 16px 18px;
-  display: flex; align-items: center; gap: 14px;
-  cursor: pointer; position: relative; overflow: hidden;
-}
-.ewa-banner::after { content: ''; position: absolute; right: -20px; top: -20px; width: 90px; height: 90px; background: rgba(255,255,255,0.08); border-radius: 50%; }
-.ewa-icon { font-size: 28px; flex-shrink: 0; }
-.ewa-text { flex: 1; }
-.ewa-title { font-size: 14px; font-weight: 900; color: white; margin-bottom: 2px; }
-.ewa-sub { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.8); }
-.ewa-arrow { color: white; font-size: 20px; font-weight: 900; position: relative; z-index: 1; }
-
-/* ══════════════════════════════════════
-   OVERLAY / MODAL SYSTEM
-══════════════════════════════════════ */
-.overlay {
-  display: none;
-  position: absolute; inset: 0;
-  background: rgba(0,0,0,0.5);
-  z-index: 150;
-  align-items: flex-end;
-  justify-content: center;
-  backdrop-filter: blur(2px);
-}
-.overlay.active { display: flex; }
-
-.sheet {
-  width: 100%; background: var(--bg);
-  border-radius: 24px 24px 0 0;
-  padding: 0 0 28px;
-  animation: slideUp 0.3s ease;
-}
-@keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-.sheet-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 12px auto 0; }
-
-.sheet-header { padding: 16px 20px 12px; border-bottom: 1px solid var(--border); }
-.sheet-title { font-size: 17px; font-weight: 900; color: var(--text); letter-spacing: -0.3px; }
-.sheet-sub { font-size: 13px; font-weight: 600; color: var(--muted); margin-top: 3px; line-height: 1.4; }
-
-.sheet-body { padding: 16px 20px 0; }
-
-/* ─── CONSENT SHEET ─── */
-.consent-provider {
-  display: flex; align-items: center; gap: 12px;
-  background: var(--sage-lt); border: 1.5px solid #9DECD6;
-  border-radius: 14px; padding: 14px 16px; margin-bottom: 16px;
-}
-.sage-logo {
-  width: 40px; height: 40px; background: var(--sage); border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 900; color: white; letter-spacing: -0.5px; flex-shrink: 0;
-}
-.cp-name { font-size: 14px; font-weight: 800; color: var(--text); }
-.cp-sub { font-size: 11px; font-weight: 600; color: var(--muted); margin-top: 1px; }
-
-.consent-item {
-  display: flex; gap: 10px; align-items: flex-start;
-  margin-bottom: 12px;
-}
-.consent-check {
-  width: 20px; height: 20px; border-radius: 6px;
-  background: var(--green-lt); border: 1.5px solid var(--green);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; margin-top: 1px;
-}
-.consent-text { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.4; }
-.consent-text strong { font-weight: 800; }
-
-.consent-legal {
-  background: var(--surface); border-radius: 10px; padding: 10px 12px;
-  font-size: 11px; font-weight: 600; color: var(--muted); line-height: 1.5;
-  margin-bottom: 16px;
-}
-
-.btn-primary {
-  width: 100%; padding: 15px; border: none; border-radius: 14px;
-  background: var(--coral); color: white;
-  font-size: 15px; font-weight: 900; cursor: pointer;
-  font-family: inherit; letter-spacing: -0.2px;
-  transition: opacity 0.15s;
-}
-.btn-primary:active { opacity: 0.85; }
-.btn-secondary {
-  width: 100%; padding: 13px; border: none; border-radius: 14px;
-  background: none; color: var(--muted);
-  font-size: 14px; font-weight: 700; cursor: pointer;
-  font-family: inherit; margin-top: 8px;
-}
-
-/* ─── LINKING POPUP ─── */
-.linking-sheet .sheet-body { text-align: center; padding: 20px 20px 0; }
-
-.link-animation {
-  display: flex; align-items: center; justify-content: center;
-  gap: 0; margin: 8px auto 20px; position: relative; height: 72px;
-}
-.link-node {
-  width: 56px; height: 56px; border-radius: 14px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 900; z-index: 1;
-}
-.link-node.bank { background: var(--coral); color: white; }
-.link-node.sage { background: var(--sage); color: white; }
-.link-line {
-  flex: 1; height: 3px; background: var(--border); position: relative; max-width: 80px;
-  overflow: visible;
-}
-.link-line-fill {
-  height: 3px; border-radius: 2px;
-  background: linear-gradient(90deg, var(--coral), var(--sage));
-  width: 0%; transition: width 1.8s ease;
-}
-.link-pulse {
-  position: absolute; top: 50%; transform: translateY(-50%);
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--sage); left: -5px;
-  animation: pulse-move 1.8s ease forwards;
-  opacity: 0;
-}
-@keyframes pulse-move {
-  0%   { left: 0%; opacity: 1; }
-  100% { left: 100%; opacity: 0.2; }
-}
-
-.link-status { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
-.link-status-sub { font-size: 13px; font-weight: 600; color: var(--muted); line-height: 1.4; margin-bottom: 20px; }
-
-.step-list { text-align: left; margin-bottom: 20px; }
-.step-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 0; border-bottom: 1px solid var(--border);
-  font-size: 13px; font-weight: 700; color: var(--muted);
-}
-.step-item:last-child { border-bottom: none; }
-.step-item.done { color: var(--text); }
-.step-item.active { color: var(--blue); }
-.step-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
-.step-icon.pending { background: var(--border); color: var(--muted); }
-.step-icon.done { background: var(--green-lt); color: var(--green); }
-.step-icon.active { background: var(--blue-lt); color: var(--blue); }
-.step-icon.spin {
-  background: var(--blue-lt);
-  animation: spin 1s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ─── SUCCESS SHEET ─── */
-.success-sheet .sheet-body { text-align: center; padding: 20px 20px 0; }
-.success-icon { font-size: 52px; margin-bottom: 12px; }
-.success-title { font-size: 20px; font-weight: 900; color: var(--text); letter-spacing: -0.4px; margin-bottom: 6px; }
-.success-sub { font-size: 14px; font-weight: 600; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
-.success-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--sage-lt); border: 1.5px solid #9DECD6;
-  border-radius: 20px; padding: 6px 14px;
-  font-size: 12px; font-weight: 800; color: var(--sage-dk);
-  margin-bottom: 20px;
-}
-
-/* ─── EWA SHEET ─── */
-.ewa-amount-display {
-  background: var(--green-lt); border: 1.5px solid #9DE6CB;
-  border-radius: 16px; padding: 16px; text-align: center; margin-bottom: 16px;
-}
-.ewa-big-amt { font-size: 32px; font-weight: 900; color: var(--green-dk); letter-spacing: -1px; }
-.ewa-amt-label { font-size: 12px; font-weight: 700; color: var(--green); margin-top: 2px; }
-
-.ewa-breakdown { margin-bottom: 16px; }
-.ewa-row { display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
-.ewa-row:last-child { border-bottom: none; font-weight: 800; }
-.ewa-row-label { font-weight: 600; color: var(--muted); }
-.ewa-row:last-child .ewa-row-label { color: var(--text); }
-.ewa-row-val { font-weight: 800; color: var(--text); }
-.ewa-row:last-child .ewa-row-val { color: var(--green-dk); font-size: 15px; }
-
-.ewa-warning {
-  background: var(--amber-lt); border: 1.5px solid #FECF7A;
-  border-radius: 12px; padding: 10px 12px;
-  font-size: 12px; font-weight: 600; color: #7A4500; line-height: 1.5;
-  margin-bottom: 16px; display: flex; gap: 8px; align-items: flex-start;
-}
-
-/* ─── EWA CONFIRM SHEET ─── */
-.ewa-confirm { text-align: center; padding: 8px 0 0; }
-.ewa-confirm-icon { font-size: 44px; margin-bottom: 10px; }
-.ewa-confirm-title { font-size: 18px; font-weight: 900; color: var(--text); margin-bottom: 6px; }
-.ewa-confirm-sub { font-size: 13px; font-weight: 600; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
+/* SALARY NOTIFICATION POPUP */
+.salary-notif-overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:400;display:none;align-items:flex-start;justify-content:center;padding:70px 16px 20px;backdrop-filter:blur(4px);}
+.salary-notif-overlay.on{display:flex;}
+.salary-notif-card{background:rgba(255,255,255,.97);border-radius:20px;padding:16px;width:100%;animation:pi .25s ease;box-shadow:0 8px 40px rgba(0,0,0,.2);}
+.sn-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.sn-app-ic{width:36px;height:36px;border-radius:9px;background:var(--coral);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.sn-app-nm{font-size:12px;font-weight:800;color:var(--text);}
+.sn-app-time{font-size:11px;font-weight:600;color:var(--muted);}
+.sn-notif-title{font-size:15px;font-weight:900;color:var(--text);margin-bottom:4px;letter-spacing:-.2px;}
+.sn-notif-body{font-size:13px;font-weight:600;color:var(--muted);line-height:1.5;margin-bottom:14px;}
+.sn-notif-actions{display:flex;gap:8px;}
+.sn-action{flex:1;padding:10px;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;border:none;font-family:inherit;text-align:center;}
+.sn-action.view{background:var(--coral);color:white;}
+.sn-action.dismiss{background:var(--surface);color:var(--muted);border:1px solid var(--border);}
 </style>
 </head>
 <body>
+<div class="phone">
 
-<div class="demo-banner">
-  <div class="demo-banner-icon">🔬</div>
-  <div class="demo-banner-text">
-    <span class="demo-tag">DEMO</span><strong>Concept prototype — not a real product.</strong><br>
-    Built by <strong>Data &amp; AI: Will Taggart</strong> · For information and discussion purposes only.
-  </div>
-</div>
-<div class="phone-shell">
-
-  <!-- STATUS BAR -->
   <div class="status-bar">
     <span>9:41</span>
-    <div class="status-icons">
-      <svg width="15" height="11" viewBox="0 0 15 11" fill="#111">
-        <path d="M7.5 2C9.9 2 12 3 13.5 4.6L14.8 3.2C12.9 1.2 10.3 0 7.5 0S2.1 1.2 0.2 3.2L1.5 4.6C3 3 5.1 2 7.5 2z"/>
-        <path d="M7.5 5.2c1.5 0 2.9.6 3.9 1.6L12.7 5.4C11.3 4 9.5 3.2 7.5 3.2S3.7 4 2.3 5.4L3.6 6.8c1-1 2.4-1.6 3.9-1.6z"/>
-        <circle cx="7.5" cy="9.5" r="1.7"/>
-      </svg>
-      <svg width="24" height="11" viewBox="0 0 24 11" fill="none">
-        <rect x="0.5" y="0.5" width="20" height="10" rx="2.5" stroke="#111" stroke-width="1"/>
-        <rect x="2" y="2" width="15" height="7" rx="1.5" fill="#111"/>
-        <path d="M21.5 3.5v4a2 2 0 000-4z" fill="#111"/>
-      </svg>
+    <div class="si">
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="#111"><path d="M7.5 2C9.9 2 12 3 13.5 4.6L14.8 3.2C12.9 1.2 10.3 0 7.5 0S2.1 1.2 0.2 3.2L1.5 4.6C3 3 5.1 2 7.5 2z"/><path d="M7.5 5.2c1.5 0 2.9.6 3.9 1.6L12.7 5.4C11.3 4 9.5 3.2 7.5 3.2S3.7 4 2.3 5.4L3.6 6.8c1-1 2.4-1.6 3.9-1.6z"/><circle cx="7.5" cy="9.5" r="1.7"/></svg>
+      <svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x=".5" y=".5" width="20" height="10" rx="2.5" stroke="#111"/><rect x="2" y="2" width="15" height="7" rx="1.5" fill="#111"/><path d="M21.5 3.5v4a2 2 0 000-4z" fill="#111"/></svg>
     </div>
   </div>
 
-  <!-- ═══════════════════════
-       HOME SCREEN
-  ═══════════════════════ -->
-  <div class="screen active" id="homeScreen">
-    <div class="top-bar" style="padding-top:6px;">
-      <div>
-        <div style="font-size:12px;font-weight:700;color:var(--muted);">Good morning</div>
-        <div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-0.3px;">Thabo 👋</div>
+  <!-- ═══ SCREEN 1: ONBOARDING ═══ -->
+  <div class="screen active" id="sOnboard">
+    <div class="onboard">
+      <div class="ob-icon">🔗</div>
+      <div class="ob-title">Connect your employer account</div>
+      <div class="ob-sub">To access more features with us, we need you to connect your account with your employer and update your banking details on payroll.</div>
+      <div style="width:100%;margin-bottom:20px;">
+        <div class="ob-feature"><div class="ob-feat-ic" style="background:var(--green-lt);">📊</div><div class="ob-feat-tx">Pay insights<small>See exactly why your salary changed each month</small></div></div>
+        <div class="ob-feature"><div class="ob-feat-ic" style="background:var(--blue-lt);">💳</div><div class="ob-feat-tx">Banking details auto-updated<small>Your bank account is kept current on payroll automatically</small></div></div>
+        <div class="ob-feature"><div class="ob-feat-ic" style="background:var(--sage-lt);">💸</div><div class="ob-feat-tx">Earned wage access<small>Access up to 50% of your salary before payday</small></div></div>
       </div>
+      <div class="ob-actions">
+        <button class="btn coral" style="width:100%;margin:0 0 10px;" onclick="go('sConsent')">Yes, connect my account</button>
+        <button class="btn-ghost" style="margin:0;width:100%;" onclick="go('sHome')">Maybe later</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN 2: CONSENT ═══ -->
+  <div class="screen" id="sConsent">
+    <div class="topbar">
+      <button class="back-btn" onclick="go('sOnboard')"><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Back</button>
+      <div class="topbar-title">Link payroll</div>
+      <div style="width:60px;"></div>
+    </div>
+    <div class="scroll" style="padding:8px 0;">
+      <div class="sage-row" style="margin-top:8px;"><div class="sage-badge">Sage</div><div class="sage-ver">&#10003; Verified payroll provider</div></div>
+      <div style="padding:0 20px;margin-bottom:20px;">
+        <div style="font-size:19px;font-weight:900;color:var(--text);margin-bottom:6px;letter-spacing:-.3px;">What will be shared</div>
+        <div style="font-size:13px;font-weight:600;color:var(--muted);line-height:1.5;">Your bank will send the following to Sage to link your account. You can revoke this at any time in Settings.</div>
+      </div>
+      <div class="con-items">
+        <div class="con-it"><div class="con-ic" style="background:var(--blue-lt);">🪪</div><div><div class="con-ttl">Your ID number</div><div class="con-desc">Used to find your payroll record at your employer.</div></div></div>
+        <div class="con-it"><div class="con-ic" style="background:var(--green-lt);">💳</div><div><div class="con-ttl">Updated banking details</div><div class="con-desc">Your new account details will be sent to Sage to update your payroll record.</div></div></div>
+        <div class="con-it"><div class="con-ic" style="background:var(--sage-lt);">📊</div><div><div class="con-ttl">Payslip data (read only)</div><div class="con-desc">Sage will share your salary breakdown each month to power your pay insights.</div></div></div>
+        <div class="con-it"><div class="con-ic" style="background:var(--amber-lt);">🔒</div><div><div class="con-ttl">Read-only access</div><div class="con-desc">We can never change your payroll settings — only receive verified data from Sage.</div></div></div>
+      </div>
+      <div class="con-legal">By continuing you agree to our <a href="#" style="color:var(--blue);">data sharing terms</a> and Sage's <a href="#" style="color:var(--blue);">open payroll policy</a>.</div>
+      <button class="btn coral" onclick="showDemo1()">I agree &mdash; connect my account</button>
+      <button class="btn-ghost" onclick="go('sOnboard')">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN 3: EMPLOYER NOTIFICATION (demo view) ═══ -->
+  <div class="screen" id="sEmployerNotif">
+    <div style="background:var(--amber-lt);border-bottom:1px solid rgba(245,158,11,.3);padding:10px 20px;flex-shrink:0;display:flex;align-items:center;gap:8px;">
+      <span style="font-size:14px;">🎬</span>
+      <span style="font-size:11px;font-weight:800;color:var(--amber);letter-spacing:.4px;text-transform:uppercase;">Demo view — Employer's Sage inbox</span>
+    </div>
+    <div class="topbar">
+      <div style="width:40px;"></div>
+      <div class="topbar-title">Sage HR Inbox</div>
+      <div style="width:40px;"></div>
+    </div>
+    <div class="scroll" style="padding:8px 0;">
+      <div style="padding:12px 20px;font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;">Pending requests</div>
+
+      <div class="notif-card">
+        <div class="notif-from">
+          <div class="notif-avatar">👤</div>
+          <div>
+            <div class="notif-from-txt">Banking details update request</div>
+            <div class="notif-from-name">Thabo Molefe &middot; EMP-00412</div>
+          </div>
+        </div>
+        <div class="notif-msg">
+          Thabo has connected their new bank account via PaySmart and has requested that their salary payment details be updated on payroll.<br><br>
+          <strong style="color:var(--text);">New account:</strong> FNB Cheque &middot; 62847391025 &middot; Branch 250655<br>
+          <strong style="color:var(--text);">Effective from:</strong> May 2025 payroll run
+        </div>
+        <div style="font-size:11px;font-weight:600;color:var(--muted);margin-bottom:12px;">This request was initiated by the employee and verified by Sage. Approving will update the payroll record immediately.</div>
+        <div class="notif-actions">
+          <button class="notif-btn approve" onclick="approveEmployer()">&#10003; Approve update</button>
+          <button class="notif-btn decline">Decline</button>
+        </div>
+      </div>
+
+      <div style="margin:0 20px;background:var(--surface);border-radius:14px;padding:14px;border:1px solid var(--border);">
+        <div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;">Previously approved</div>
+        <div style="font-size:13px;font-weight:600;color:var(--muted);">No other pending items</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN 4: CONFIRMATION (back in employee app) ═══ -->
+  <div class="screen" id="sConfirmed">
+    <div class="topbar" style="padding-top:6px;">
+      <div><div style="font-size:12px;font-weight:700;color:var(--muted);">Good morning</div><div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.3px;">Thabo &#128075;</div></div>
+      <div style="display:flex;gap:8px;">
+        <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></button>
+      </div>
+    </div>
+    <div class="scroll" style="padding:8px 0;">
+      <!-- Success banner -->
+      <div style="margin:0 16px 14px;background:var(--green-lt);border:1.5px solid #B3E8D8;border-radius:18px;padding:16px;">
+        <div style="font-size:22px;margin-bottom:8px;">&#10003;&#65039;</div>
+        <div style="font-size:16px;font-weight:900;color:#1A4A38;margin-bottom:4px;letter-spacing:-.2px;">Payroll connected!</div>
+        <div style="font-size:13px;font-weight:600;color:var(--sage-dk);line-height:1.5;">Will Bakery has approved your banking details update. Your salary will be paid to your new account from next month.</div>
+      </div>
+
+      <!-- What's unlocked -->
+      <div style="padding:0 20px 8px;font-size:14px;font-weight:800;color:var(--text);">Features now unlocked</div>
+      <div style="padding:0 16px;display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+        <div class="ob-feature" style="margin-bottom:0;"><div class="ob-feat-ic" style="background:var(--green-lt);">&#128202;</div><div class="ob-feat-tx">Pay insights active<small>Tap your next salary to see a full breakdown</small></div></div>
+        <div class="ob-feature" style="margin-bottom:0;"><div class="ob-feat-ic" style="background:var(--sage-lt);">&#128184;</div><div class="ob-feat-tx">Earned wage access ready<small>Available after your first Sage-linked payment</small></div></div>
+      </div>
+
+      <div style="padding:0 16px;font-size:14px;font-weight:800;color:var(--text);margin-bottom:8px;">Recent</div>
+      <div class="txns">
+        <div class="txn" style="margin:0 0 0;">
+          <div class="txn-ic" style="background:var(--green-lt);">&#128203;</div>
+          <div class="txn-inf"><div class="txn-nm">Payroll linked</div><div class="txn-sb">Will Bakery approved &middot; Today</div></div>
+          <div class="txn-r"><div style="font-size:11px;font-weight:800;color:var(--sage);">&#10003; Done</div></div>
+        </div>
+      </div>
+
+      <div style="padding:20px 16px;">
+        <button class="btn coral" style="width:100%;margin:0;" onclick="showSalaryNotif()">&#9654; Fast-forward to payday</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SCREEN 5: HOME (after salary received) ═══ -->
+  <div class="screen" id="sHome">
+    <div class="topbar" style="padding-top:6px;">
+      <div><div style="font-size:12px;font-weight:700;color:var(--muted);">Good morning</div><div style="font-size:18px;font-weight:900;color:var(--text);letter-spacing:-.3px;">Thabo &#128075;</div></div>
       <div style="display:flex;gap:8px;">
         <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></button>
         <button class="icon-btn" style="background:var(--coral);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></button>
       </div>
     </div>
-
-    <div class="home-header">
-      <div class="hh-balance-label">Available balance</div>
-      <div class="hh-balance">R 42,318.40</div>
-      <div class="hh-row">
-        <span class="hh-acct">Cheque ···· 4521</span>
-        <span class="hh-pill">Current Account</span>
+    <div class="home-card">
+      <div class="hc-lbl">Available balance</div>
+      <div class="hc-amt" id="homeBalance">R 42,318.40</div>
+      <div class="hc-row"><span class="hc-acct">Cheque &middot;&middot;&middot;&middot; 4521</span><span class="hc-pill">Current account</span></div>
+    </div>
+    <div class="qa">
+      <button class="qa-btn"><div class="qa-icon" style="background:var(--blue-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><span class="qa-lbl">Add money</span></button>
+      <button class="qa-btn"><div class="qa-icon" style="background:var(--green-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><span class="qa-lbl">Send</span></button>
+      <button class="qa-btn"><div class="qa-icon" style="background:var(--coral-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><span class="qa-lbl">Pay</span></button>
+      <button class="qa-btn"><div class="qa-icon" style="background:var(--purple-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><span class="qa-lbl">History</span></button>
+    </div>
+    <div class="scroll">
+      <div class="sec-hdr"><span class="sec-title">Recent</span></div>
+      <div class="txns" id="homeTxns">
+        <div class="txn hi" onclick="startJourney()">
+          <div class="txn-ic" style="background:#E5F6F0;">&#128179;</div>
+          <div class="txn-inf"><div class="txn-nm">Will Bakery</div><div class="txn-sb">1 Apr &middot; Salary payment</div></div>
+          <div class="txn-r"><div class="txn-am cr">+R 34,296.71</div><div class="txn-tag">&#10022; Insights</div></div>
+        </div>
+        <div class="txn"><div class="txn-ic" style="background:#F3E8FF;">&#128717;</div><div class="txn-inf"><div class="txn-nm">Woolworths Food</div><div class="txn-sb">3 Apr &middot; Groceries</div></div><div class="txn-r"><div class="txn-am db">-R 1,240.00</div></div></div>
+        <div class="txn"><div class="txn-ic" style="background:var(--coral-lt);">&#9889;&#65039;</div><div class="txn-inf"><div class="txn-nm">City Power</div><div class="txn-sb">5 Apr &middot; Bills</div></div><div class="txn-r"><div class="txn-am db">-R 890.00</div></div></div>
+        <div class="txn"><div class="txn-ic" style="background:var(--blue-lt);">&#128241;</div><div class="txn-inf"><div class="txn-nm">Vodacom</div><div class="txn-sb">9 Apr &middot; Mobile</div></div><div class="txn-r"><div class="txn-am db">-R 699.00</div></div></div>
+        <div class="txn"><div class="txn-ic" style="background:var(--green-lt);">&#127916;</div><div class="txn-inf"><div class="txn-nm">Netflix</div><div class="txn-sb">9 Apr &middot; Entertainment</div></div><div class="txn-r"><div class="txn-am db">-R 199.00</div></div></div>
       </div>
     </div>
-
-    <div class="quick-actions">
-      <button class="qa-btn"><div class="qa-icon" style="background:#EBF2FF;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><span class="qa-label">Add money</span></button>
-      <button class="qa-btn"><div class="qa-icon" style="background:var(--green-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div><span class="qa-label">Send</span></button>
-      <button class="qa-btn"><div class="qa-icon" style="background:var(--coral-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div><span class="qa-label">Pay</span></button>
-      <button class="qa-btn"><div class="qa-icon" style="background:var(--purple-lt);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div><span class="qa-label">History</span></button>
-    </div>
-
-    <div class="scroll-body">
-      <div class="section-header"><span class="section-title">My Pots</span><span class="section-link">See all</span></div>
-      <div class="pots-scroll">
-        <div class="pot-card"><div class="pot-emoji">🏠</div><div class="pot-name">Home deposit</div><div class="pot-amt">R 38,500</div><div class="pot-target">of R 80,000</div><div class="pot-bar-bg"><div class="pot-bar-fill" style="width:48%"></div></div></div>
-        <div class="pot-card"><div class="pot-emoji">✈️</div><div class="pot-name">Holiday</div><div class="pot-amt">R 12,200</div><div class="pot-target">of R 20,000</div><div class="pot-bar-bg"><div class="pot-bar-fill" style="width:61%"></div></div></div>
-        <div class="pot-card"><div class="pot-emoji">🚗</div><div class="pot-name">Car service</div><div class="pot-amt">R 4,800</div><div class="pot-target">of R 6,000</div><div class="pot-bar-bg"><div class="pot-bar-fill" style="width:80%"></div></div></div>
-        <div class="pot-card" style="background:var(--coral-lt);border-color:var(--coral-md);"><div class="pot-emoji">➕</div><div class="pot-name" style="color:var(--coral);">New pot</div><div class="pot-amt" style="color:var(--muted);font-size:11px;font-weight:600;">Start saving</div></div>
-      </div>
-
-      <div class="section-header"><span class="section-title">Spending this month</span><span class="section-link">Details</span></div>
-      <div class="spend-card">
-        <div class="spend-title">April 2025</div>
-        <div class="spend-row"><span class="spend-cat-icon">🛒</span><span class="spend-cat-name">Groceries</span><div class="spend-bar-wrap"><div class="spend-bar" style="width:72%;background:var(--blue);"></div></div><span class="spend-amt">R 3,240</span></div>
-        <div class="spend-row"><span class="spend-cat-icon">🏠</span><span class="spend-cat-name">Bills</span><div class="spend-bar-wrap"><div class="spend-bar" style="width:58%;background:var(--purple);"></div></div><span class="spend-amt">R 2,590</span></div>
-        <div class="spend-row"><span class="spend-cat-icon">🍔</span><span class="spend-cat-name">Eating out</span><div class="spend-bar-wrap"><div class="spend-bar" style="width:34%;background:var(--amber);"></div></div><span class="spend-amt">R 1,520</span></div>
-        <div class="spend-row"><span class="spend-cat-icon">🚗</span><span class="spend-cat-name">Transport</span><div class="spend-bar-wrap"><div class="spend-bar" style="width:22%;background:var(--green);"></div></div><span class="spend-amt">R 980</span></div>
-      </div>
-
-      <div class="section-header"><span class="section-title">Recent</span><span class="section-link" onclick="goTo('txnScreen')">See all</span></div>
-      <div class="txn-list">
-        <div class="txn-item highlight" onclick="showConsent()">
-          <div class="txn-icon" style="background:#E5F6F0;">💳</div>
-          <div class="txn-info"><div class="txn-name">Salary Payment</div><div class="txn-sub">1 Apr · Employer</div></div>
-          <div class="txn-right"><div class="txn-amt cr">+R 35,991.05</div><div class="txn-tag">✦ Insights</div></div>
-        </div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:#F3E8FF;">🛍</div>
-          <div class="txn-info"><div class="txn-name">Woolworths Food</div><div class="txn-sub">3 Apr · Groceries</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 1,240.00</div></div>
-        </div>
-        <div class="txn-item">
-          <div class="txn-icon" style="background:var(--coral-lt);">⚡️</div>
-          <div class="txn-info"><div class="txn-name">City Power</div><div class="txn-sub">5 Apr · Bills</div></div>
-          <div class="txn-right"><div class="txn-amt db">−R 890.00</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="nav-bar">
-      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span style="color:var(--coral);">Home</span><div class="nav-dot"></div></div>
-      <div class="nav-item" onclick="goTo('txnScreen')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span>Payments</span><div class="nav-dot"></div></div>
-      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Explore</span><div class="nav-dot"></div></div>
-      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
+    <div class="nav">
+      <div class="nav-it on"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span style="color:var(--coral);">Home</span><div class="nav-dot"></div></div>
+      <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span>Payments</span><div class="nav-dot"></div></div>
+      <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Explore</span><div class="nav-dot"></div></div>
+      <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
     </div>
   </div>
 
-  <!-- ═══════════════════════
-       TRANSACTIONS SCREEN
-  ═══════════════════════ -->
-  <div class="screen" id="txnScreen">
-    <div class="top-bar">
-      <button class="back-btn" onclick="goTo('homeScreen')"><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Home</button>
-      <div class="top-bar-title">Transactions</div>
-      <button class="icon-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="20" y2="12"/><line x1="12" y1="18" x2="20" y2="18"/></svg></button>
-    </div>
-
-    <div style="margin:0 16px 14px;background:var(--surface);border-radius:14px;padding:12px 16px;border:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
-      <div><div style="font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:3px;">Balance</div><div style="font-size:22px;font-weight:900;letter-spacing:-0.6px;color:var(--text);">R 42,318.40</div></div>
-      <div style="text-align:right;"><div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:3px;">April spend</div><div style="font-size:16px;font-weight:800;color:var(--red);">−R 9,274.00</div></div>
-    </div>
-
-    <div style="display:flex;gap:6px;padding:0 16px 12px;flex-shrink:0;overflow-x:auto;">
-      <div style="background:var(--coral);color:white;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:800;white-space:nowrap;">Apr 2025</div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;">Mar 2025</div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;">Feb 2025</div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;">Jan 2025</div>
-    </div>
-
-    <div class="scroll-body">
-      <div class="txn-list">
-        <div class="txn-date-group">1 April</div>
-        <div class="txn-item highlight" onclick="showConsent()">
-          <div class="txn-icon" style="background:#E5F6F0;">💳</div>
-          <div class="txn-info"><div class="txn-name">Salary Payment</div><div class="txn-sub">Employer · Income</div></div>
-          <div class="txn-right"><div class="txn-amt cr">+R 35,991.05</div><div class="txn-tag">✦ Insights</div></div>
-        </div>
-        <div class="txn-date-group">3 April</div>
-        <div class="txn-item"><div class="txn-icon" style="background:#F3E8FF;">🛍</div><div class="txn-info"><div class="txn-name">Woolworths Food</div><div class="txn-sub">Groceries · Waterfront</div></div><div class="txn-right"><div class="txn-amt db">−R 1,240.00</div></div></div>
-        <div class="txn-date-group">5 April</div>
-        <div class="txn-item"><div class="txn-icon" style="background:var(--coral-lt);">⚡️</div><div class="txn-info"><div class="txn-name">City Power</div><div class="txn-sub">Electricity · Debit order</div></div><div class="txn-right"><div class="txn-amt db">−R 890.00</div></div></div>
-        <div class="txn-item"><div class="txn-icon" style="background:var(--blue-lt);">💧</div><div class="txn-info"><div class="txn-name">Johannesburg Water</div><div class="txn-sub">Utilities · Debit order</div></div><div class="txn-right"><div class="txn-amt db">−R 440.00</div></div></div>
-        <div class="txn-date-group">7 April</div>
-        <div class="txn-item"><div class="txn-icon" style="background:#EEF2FF;">🚗</div><div class="txn-info"><div class="txn-name">Discovery Insure</div><div class="txn-sub">Car insurance · Debit order</div></div><div class="txn-right"><div class="txn-amt db">−R 1,850.00</div></div></div>
-        <div class="txn-item"><div class="txn-icon" style="background:var(--green-lt);">💊</div><div class="txn-info"><div class="txn-name">Dischem Pharmacy</div><div class="txn-sub">Health · Sandton</div></div><div class="txn-right"><div class="txn-amt db">−R 312.00</div></div></div>
-        <div class="txn-date-group">9 April</div>
-        <div class="txn-item"><div class="txn-icon" style="background:var(--amber-lt);">🍔</div><div class="txn-info"><div class="txn-name">Mr D Food</div><div class="txn-sub">Eating out · Delivery</div></div><div class="txn-right"><div class="txn-amt db">−R 312.00</div></div></div>
-        <div class="txn-item"><div class="txn-icon" style="background:#F3E8FF;">☕</div><div class="txn-info"><div class="txn-name">Seattle Coffee Co.</div><div class="txn-sub">Eating out · Rosebank</div></div><div class="txn-right"><div class="txn-amt db">−R 86.00</div></div></div>
-        <div class="txn-date-group">11 April</div>
-        <div class="txn-item"><div class="txn-icon" style="background:var(--blue-lt);">📱</div><div class="txn-info"><div class="txn-name">Vodacom</div><div class="txn-sub">Mobile · Debit order</div></div><div class="txn-right"><div class="txn-amt db">−R 699.00</div></div></div>
-        <div class="txn-item"><div class="txn-icon" style="background:var(--green-lt);">🎬</div><div class="txn-info"><div class="txn-name">Netflix</div><div class="txn-sub">Entertainment · Subscription</div></div><div class="txn-right"><div class="txn-amt db">−R 199.00</div></div></div>
+  <!-- ═══ LOADING SCREEN ═══ -->
+  <div class="screen" id="sLoad">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 30px;text-align:center;">
+      <div style="width:64px;height:64px;border-radius:20px;background:var(--sage);display:flex;align-items:center;justify-content:center;margin-bottom:20px;">
+        <svg width="36" height="36" viewBox="0 0 36 36" fill="none"><path d="M6 18C6 11.4 11.4 6 18 6s12 5.4 12 12-5.4 12-12 12" stroke="white" stroke-width="3" stroke-linecap="round"/><circle cx="18" cy="18" r="4" fill="white"/></svg>
       </div>
-    </div>
-
-    <div class="nav-bar">
-      <div class="nav-item" onclick="goTo('homeScreen')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span>Home</span><div class="nav-dot"></div></div>
-      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span style="color:var(--coral);">Payments</span><div class="nav-dot"></div></div>
-      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Explore</span><div class="nav-dot"></div></div>
-      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
+      <div style="font-size:18px;font-weight:900;color:var(--text);margin-bottom:8px;">Generating insight</div>
+      <div style="font-size:13px;font-weight:600;color:var(--muted);line-height:1.5;margin-bottom:32px;" id="loadSub">Fetching your April payslip from Sage&#8230;</div>
+      <div style="width:100%;margin-bottom:32px;">
+        <div class="lstep"><div class="ls-ic" style="background:var(--green-lt);">&#9989;</div><div class="ls-tx">Identity matched<small>Linked to Will Bakery payroll</small></div><div class="ls-st done">Done</div></div>
+        <div class="lstep"><div class="ls-ic" style="background:var(--amber-lt);" id="ls2ic">&#8987;</div><div class="ls-tx">Payslip retrieved<small>Fetching April &amp; March data</small></div><div class="ls-st run" id="ls2">Fetching&#8230;</div></div>
+        <div class="lstep"><div class="ls-ic" style="background:var(--surface);" id="ls3ic">&#128202;</div><div class="ls-tx">Insight generated<small>Comparing month on month</small></div><div class="ls-st wait" id="ls3">Waiting</div></div>
+      </div>
+      <div class="pb-wrap"><div class="pb-fill" id="pb"></div></div>
     </div>
   </div>
 
-  <!-- ═══════════════════════
-       INSIGHT SCREEN
-  ═══════════════════════ -->
-  <div class="screen" id="insightScreen">
-    <div class="top-bar">
-      <button class="back-btn" onclick="goTo('txnScreen')"><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Transactions</button>
-      <div class="top-bar-title">Pay insight</div>
-      <div style="width:90px;"></div>
+  <!-- ═══ INSIGHT SCREEN ═══ -->
+  <div class="screen" id="sInsight">
+    <div class="topbar">
+      <button class="back-btn" onclick="go('sHome')"><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Home</button>
+      <div class="topbar-title">Pay insight</div>
+      <div style="width:80px;"></div>
     </div>
+    <div class="ins-hero">
+      <div class="ih-lbl">Will Bakery &middot; April 2025</div>
+      <div class="ih-amt">R 34,296.71</div>
+      <div class="ih-dt">Received 1 April 2025</div>
+      <div class="ih-pills"><div class="ih-pill">&#128202; Sage Payroll</div><div class="ih-pill pos">+R 3,692.66 vs March</div></div>
+    </div>
+    <div class="scroll">
 
-    <div class="insight-hero">
-      <div class="ih-label">Salary · April 2025</div>
-      <div class="ih-amt">R 35,991.05</div>
-      <div class="ih-date">Received 1 April 2025</div>
-      <div class="ih-pills">
-        <div class="ih-pill">Sage Payroll</div>
-        <div class="ih-pill neg">−R 9,134 vs March</div>
+      <!-- Summary -->
+      <div class="ins-summary">
+        <div class="is-title">April vs March 2025</div>
+        <div class="is-body">Your net pay <strong>increased by R3,692.66</strong>, driven by overtime earnings. Of the R5,400 income increase, you kept <strong>68%</strong> &mdash; R1,707.34 went to increased tax.</div>
       </div>
-    </div>
 
-    <div class="scroll-body">
-
-      <!-- EWA Banner -->
-      <div class="ewa-banner" onclick="showEwa()">
-        <div class="ewa-icon">💸</div>
-        <div class="ewa-text">
-          <div class="ewa-title">Access R 17,995.52 now</div>
-          <div class="ewa-sub">50% of your salary · R 120 fee · Instant transfer</div>
+      <!-- Income Changes -->
+      <div class="ins-sec">
+        <div class="ins-sec-hd">Income changes</div>
+        <div class="ins-item">
+          <div class="ins-dot pos"></div>
+          <div class="ins-nm">CC OT x1.5 Weekdays &amp; Saturday<small>Added this month</small></div>
+          <div class="ins-vl pos">+R 5,400</div>
         </div>
-        <div class="ewa-arrow">›</div>
       </div>
 
-      <div class="net-banner">
-        <div class="nb-icon">📉</div>
+      <!-- Tax Impact -->
+      <div class="ins-sec">
+        <div class="ins-sec-hd">Tax impact</div>
+        <div class="ins-item">
+          <div class="ins-dot neg"></div>
+          <div class="ins-nm">PAYE increased<small>Higher taxable remuneration of +R5,400</small></div>
+          <div class="ins-vl neg">-R 1,707.34</div>
+        </div>
+        <div class="ins-item" style="background:var(--surface);">
+          <div class="ins-dot neu"></div>
+          <div class="ins-nm">Skills Development Levy (SDL)<small>Paid by employer &mdash; does not affect your take-home</small></div>
+          <div class="ins-vl" style="color:var(--muted);">+R 648</div>
+        </div>
+      </div>
+
+      <!-- How it adds up -->
+      <div class="ins-sec">
+        <div class="ins-sec-hd">How it adds up</div>
+        <div class="tot-row"><div class="tr-l">Income change</div><div class="tr-v" style="color:var(--green);">+R 5,400.00</div></div>
+        <div class="tot-row"><div class="tr-l">Tax &amp; deductions</div><div class="tr-v" style="color:var(--red);">-R 1,707.34</div></div>
+        <div class="tot-row"><div class="tr-l">Net pay change</div><div class="tr-v" style="color:var(--green);font-size:15px;">+R 3,692.66</div></div>
+      </div>
+
+      <!-- Tip -->
+      <div class="tip"><div class="tip-ic">&#128161;</div><div class="tip-tx">Your marginal deduction rate was <strong>32%</strong> &mdash; for every R1 of extra income, R0.32 went to tax.</div></div>
+
+      <!-- EARLY PAY -->
+      <div class="ep-ban" onclick="showAdv()">
+        <div class="ep-lbl">&#128184; Early pay access</div>
+        <div class="ep-ttl">Get paid today</div>
+        <div class="ep-sub">Access up to 50% of your salary now</div>
+        <div class="ep-row">
+          <div><div class="ep-am">R 17,148.35</div><div class="ep-fee">R 120 flat fee applies</div></div>
+          <button class="ep-btn">Access now</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav">
+      <div class="nav-it on"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span style="color:var(--coral);">Home</span><div class="nav-dot"></div></div>
+      <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span>Payments</span><div class="nav-dot"></div></div>
+      <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Explore</span><div class="nav-dot"></div></div>
+      <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
+    </div>
+  </div>
+
+  <!-- ═══ ADVANCE OVERLAY ═══ -->
+  <div class="overlay" id="oAdv">
+    <div class="sheet">
+      <div class="sh-handle"></div>
+      <div class="sh-title">Early pay access</div>
+      <div class="sh-sub">Access up to 50% of your April salary right now. Deducted from your May payslip automatically.</div>
+      <div class="adv-hero"><div class="adv-lbl">Available to access</div><div class="adv-amt">R 17,148.35</div><div class="adv-sub">50% of R 34,296.71 net salary</div></div>
+      <div class="fee-row"><div class="fee-l">Advance amount</div><div class="fee-v">R 17,148.35</div></div>
+      <div class="fee-row"><div class="fee-l">Flat fee</div><div class="fee-v">R 120.00</div></div>
+      <div class="fee-row fee-tot"><div class="fee-l">You'll receive</div><div class="fee-v">R 17,028.35</div></div>
+      <div class="adv-note"><strong>Repayment:</strong> R 17,148.35 deducted from your May 2025 salary via Sage payroll. No interest, no credit check.</div>
+      <button class="btn sage" style="margin-top:16px;" onclick="confirmAdv()">Confirm &mdash; receive R 17,028.35</button>
+      <button class="btn-ghost" onclick="hideOv('oAdv')">Maybe later</button>
+    </div>
+  </div>
+
+  <!-- ═══ ADVANCE SUCCESS ═══ -->
+  <div class="overlay center" id="oSuccess">
+    <div class="sheet rd">
+      <div class="sh-handle"></div>
+      <div style="padding:10px 20px 24px;text-align:center;">
+        <div style="font-size:56px;margin-bottom:16px;">&#127881;</div>
+        <div style="font-size:22px;font-weight:900;color:var(--text);margin-bottom:8px;letter-spacing:-.4px;">Money on its way!</div>
+        <div style="font-size:14px;font-weight:600;color:var(--muted);line-height:1.5;margin-bottom:22px;">R 17,028.35 will arrive in your account within minutes.</div>
+        <div style="background:var(--surface);border-radius:16px;padding:16px;border:1px solid var(--border);margin-bottom:24px;text-align:left;">
+          <div class="sc-row"><span class="sc-l">Amount sent</span><span class="sc-v" style="color:var(--green);">R 17,028.35</span></div>
+          <div class="sc-row"><span class="sc-l">Fee charged</span><span class="sc-v">R 120.00</span></div>
+          <div class="sc-row"><span class="sc-l">Repayment date</span><span class="sc-v">1 May 2025</span></div>
+          <div class="sc-row"><span class="sc-l">Powered by</span><span class="sc-v" style="color:var(--sage-dk);">Sage Payroll</span></div>
+        </div>
+        <button class="btn coral full" onclick="finishAdv()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DEMO POPUP 1: Bank → Sage linking ═══ -->
+  <div class="demo-ov" id="oDemo1">
+    <div class="demo-box">
+      <div class="demo-badge">&#127916; Demo explainer</div>
+      <h3>What happens when you tap &ldquo;Connect&rdquo;</h3>
+      <p>In a live integration, this triggers a secure request from the bank to Sage to link the employee's profile and push updated banking details to payroll.</p>
+      <div class="api-flow">
+        <div class="api-step"><div class="api-num">1</div><div class="api-tx">Bank sends identity request<span>ID number + new account details sent to Sage API</span></div></div>
+        <div class="api-step"><div class="api-num s">2</div><div class="api-tx">Sage matches the employee<span>ID linked to active payroll record at Will Bakery</span></div></div>
+        <div class="api-step"><div class="api-num s">3</div><div class="api-tx">Sage notifies the employer (HR)<span>Will Bakery receives an approval request in their Sage HR inbox</span></div></div>
+        <div class="api-step"><div class="api-num">4</div><div class="api-tx">Employer approves the update<span>HR approves &rarr; bank account updated on payroll record</span></div></div>
+        <div class="api-step"><div class="api-num">5</div><div class="api-tx">Bank receives confirmation<span>Employee is notified that their details are updated</span></div></div>
+      </div>
+      <button class="btn coral full" onclick="goToEmployer()">See the employer's Sage inbox &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ═══ SALARY NOTIFICATION ═══ -->
+  <div class="salary-notif-overlay" id="oSalaryNotif">
+    <div class="salary-notif-card">
+      <div class="sn-header">
+        <div class="sn-app-ic">&#128178;</div>
         <div>
-          <div class="nb-vs">Net pay change vs March</div>
-          <div class="nb-val">−R 9,134.16</div>
-          <div class="nb-sub">Overtime &amp; allowances removed</div>
+          <div class="sn-app-nm">PaySmart</div>
+          <div class="sn-app-time">now</div>
         </div>
       </div>
-
-      <div class="stat-grid">
-        <div class="stat-tile"><div class="st-label">Income change</div><div class="st-val neg">−R 11,206</div><div class="st-sub">Gross earnings</div></div>
-        <div class="stat-tile"><div class="st-label">Tax saved</div><div class="st-val pos">+R 2,072</div><div class="st-sub">Offsets the drop</div></div>
-        <div class="stat-tile"><div class="st-label">PAYE paid</div><div class="st-val neu">R 8,412</div><div class="st-sub">Income tax</div></div>
-        <div class="stat-tile"><div class="st-label">Pension</div><div class="st-val neu">R 6,000</div><div class="st-sub">This month</div></div>
-      </div>
-
-      <div class="info-card">
-        <div class="ic-head">Income removed</div>
-        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">CC OT – Public Holiday Rostered</div><div class="ic-val neg">−R 4,256</div></div>
-        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Acting Allowance</div><div class="ic-val neg">−R 4,000</div></div>
-        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Standby Allowance</div><div class="ic-val neg">−R 2,500</div></div>
-        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Cellphone Allowance (Taxable)</div><div class="ic-val neg">−R 450</div></div>
-      </div>
-
-      <div class="info-card">
-        <div class="ic-head">Deduction changes</div>
-        <div class="ic-row"><div class="ic-dot pos"></div><div class="ic-name">PAYE (income tax)<small>Lower taxable income</small></div><div class="ic-val pos">+R 6,066</div></div>
-        <div class="ic-row"><div class="ic-dot pos"></div><div class="ic-name">Medical Aid<small>Reduced contributions</small></div><div class="ic-val pos">+R 1,600</div></div>
-        <div class="ic-row"><div class="ic-dot pos"></div><div class="ic-name">Vitality / Keyfit<small>Removed this month</small></div><div class="ic-val pos">+R 250</div></div>
-        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Pension Fund<small>Higher contributions</small></div><div class="ic-val neg">−R 6,000</div></div>
-        <div class="ic-row"><div class="ic-dot neg"></div><div class="ic-name">Flexi Fund</div><div class="ic-val neg">−R 156</div></div>
-      </div>
-
-      <div class="info-card">
-        <div class="ic-head">How it adds up</div>
-        <div class="total-row"><div class="tr-label">Income change</div><div class="tr-val" style="color:var(--red);">−R 11,206.00</div></div>
-        <div class="total-row"><div class="tr-label">Deduction offset</div><div class="tr-val" style="color:var(--green);">+R 2,071.84</div></div>
-        <div class="total-row"><div class="tr-label">Net pay change</div><div class="tr-val" style="color:var(--red);font-size:15px;">−R 9,134.16</div></div>
-      </div>
-
-      <div class="tip-chip">
-        <div class="tip-icon">💡</div>
-        <div class="tip-text">Of every <strong>R1</strong> of extra income, only <strong>R0.18</strong> went to tax. Your marginal deduction rate was <strong>18%</strong> — relatively efficient.</div>
-      </div>
-
-    </div>
-
-    <div class="nav-bar">
-      <div class="nav-item" onclick="goTo('homeScreen')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span>Home</span><div class="nav-dot"></div></div>
-      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span style="color:var(--coral);">Payments</span><div class="nav-dot"></div></div>
-      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Explore</span><div class="nav-dot"></div></div>
-      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       OVERLAY 1 — CONSENT SHEET
-  ══════════════════════════════════════════ -->
-  <div class="overlay" id="overlayConsent">
-    <div class="sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <div class="sheet-title">Unlock pay insights</div>
-        <div class="sheet-sub">Your payslip data is processed by Sage. We need your consent to share it securely with your bank.</div>
-      </div>
-      <div class="sheet-body">
-        <div class="consent-provider">
-          <div class="sage-logo">SAGE</div>
-          <div>
-            <div class="cp-name">Sage Payroll Services</div>
-            <div class="cp-sub">Verified payroll provider · South Africa</div>
-          </div>
-        </div>
-
-        <div class="consent-item">
-          <div class="consent-check"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="consent-text">Share your <strong>employee ID</strong> and payroll reference with your bank</div>
-        </div>
-        <div class="consent-item">
-          <div class="consent-check"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="consent-text">Provide <strong>payslip breakdowns</strong> for salary payments detected in your account</div>
-        </div>
-        <div class="consent-item">
-          <div class="consent-check"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="var(--green)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="consent-text">Enable <strong>Earned Wage Access</strong> based on your verified salary</div>
-        </div>
-
-        <div class="consent-legal">
-          Your data is processed under POPIA. You can revoke this consent at any time in Settings. Data is not sold to third parties.
-        </div>
-
-        <button class="btn-primary" onclick="showLinking()">Agree &amp; link my profile</button>
-        <button class="btn-secondary" onclick="closeOverlay('overlayConsent')">Not now</button>
+      <div class="sn-notif-title">Salary received &#127881;</div>
+      <div class="sn-notif-body">Will Bakery paid you <strong>R 34,296.71</strong>. Tap to see your pay insight &mdash; your April salary includes overtime.</div>
+      <div class="sn-notif-actions">
+        <button class="sn-action view" onclick="viewInsight()">View payment</button>
+        <button class="sn-action dismiss" onclick="hideOv('oSalaryNotif');go('sHome')">Dismiss</button>
       </div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       OVERLAY 2 — LINKING IN PROGRESS
-  ══════════════════════════════════════════ -->
-  <div class="overlay" id="overlayLinking">
-    <div class="sheet linking-sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <div class="sheet-title">Linking your profile</div>
-        <div class="sheet-sub">A secure request is being sent to Sage to link your employee record with your bank account.</div>
-      </div>
-      <div class="sheet-body">
-        <div class="link-animation">
-          <div class="link-node bank" style="font-size:9px;font-weight:900;">BANK</div>
-          <div class="link-line"><div class="link-line-fill" id="linkFill"></div><div class="link-pulse" id="linkPulse"></div></div>
-          <div class="link-node sage">SAGE</div>
-        </div>
-
-        <div class="step-list" id="stepList">
-          <div class="step-item done" id="step1"><div class="step-icon done">✓</div>Consent recorded</div>
-          <div class="step-item active" id="step2"><div class="step-icon spin" id="step2icon" style="border: 2px solid var(--blue-lt); border-top-color: var(--blue); border-radius:50%;"></div>Sending request to Sage...</div>
-          <div class="step-item" id="step3"><div class="step-icon pending" id="step3icon">3</div>Matching employee record</div>
-          <div class="step-item" id="step4"><div class="step-icon pending" id="step4icon">4</div>Activating insights</div>
-        </div>
-
-        <button class="btn-secondary" style="color:var(--subtle);font-size:12px;" onclick="closeOverlay('overlayLinking')">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       OVERLAY 3 — SUCCESS
-  ══════════════════════════════════════════ -->
-  <div class="overlay" id="overlaySuccess">
-    <div class="sheet success-sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-body">
-        <div class="success-icon">🎉</div>
-        <div class="success-title">Profile linked!</div>
-        <div class="success-sub">Your employee record has been verified by Sage. Pay insights and Earned Wage Access are now active on your account.</div>
-        <div class="success-badge">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1l1.5 4h4l-3.3 2.4 1.3 4L7 9 3.5 11.4l1.3-4L1.5 5h4z" fill="var(--sage)"/></svg>
-          Verified by Sage Payroll
-        </div>
-        <button class="btn-primary" onclick="goToInsight()">View my pay insight</button>
-        <button class="btn-secondary" onclick="closeOverlay('overlaySuccess')">Maybe later</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       OVERLAY 4 — EWA SHEET
-  ══════════════════════════════════════════ -->
-  <div class="overlay" id="overlayEwa">
-    <div class="sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-header">
-        <div class="sheet-title">Access your earned wages</div>
-        <div class="sheet-sub">Get up to 50% of your verified salary before payday — instantly.</div>
-      </div>
-      <div class="sheet-body">
-        <div class="ewa-amount-display">
-          <div class="ewa-big-amt">R 17,995.52</div>
-          <div class="ewa-amt-label">50% of R 35,991.05 salary</div>
-        </div>
-
-        <div class="ewa-breakdown">
-          <div class="ewa-row"><span class="ewa-row-label">Amount requested</span><span class="ewa-row-val">R 17,995.52</span></div>
-          <div class="ewa-row"><span class="ewa-row-label">Access fee</span><span class="ewa-row-val">−R 120.00</span></div>
-          <div class="ewa-row"><span class="ewa-row-label">Transfer time</span><span class="ewa-row-val">Instant</span></div>
-          <div class="ewa-row"><span class="ewa-row-label">You receive</span><span class="ewa-row-val">R 17,875.52</span></div>
-        </div>
-
-        <div class="ewa-warning">
-          <span>⚠️</span>
-          <span>This amount will be deducted from your next salary payment. Your employer will be notified via Sage Payroll.</span>
-        </div>
-
-        <button class="btn-primary" onclick="showEwaConfirm()">Confirm — get R 17,875.52</button>
-        <button class="btn-secondary" onclick="closeOverlay('overlayEwa')">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════
-       OVERLAY 5 — EWA CONFIRM
-  ══════════════════════════════════════════ -->
-  <div class="overlay" id="overlayEwaConfirm">
-    <div class="sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-body">
-        <div class="ewa-confirm">
-          <div class="ewa-confirm-icon">✅</div>
-          <div class="ewa-confirm-title">Money on its way!</div>
-          <div class="ewa-confirm-sub">R 17,875.52 is being transferred to your account. It should arrive within seconds. R 17,995.52 will be deducted from your next salary.</div>
-          <div style="background:var(--green-lt);border-radius:14px;padding:14px;margin-bottom:16px;text-align:left;">
-            <div style="font-size:11px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">Transfer summary</div>
-            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;">R 17,875.52 → Cheque ···· 4521</div>
-            <div style="font-size:12px;font-weight:600;color:var(--muted);">Ref: EWA-20250401-4521</div>
-          </div>
-          <button class="btn-primary" onclick="closeOverlay('overlayEwaConfirm')">Done</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- end phone-shell -->
+</div>
 
 <script>
-  var insightUnlocked = false;
-
-  function goTo(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-  }
-
-  function showConsent() {
-    if (insightUnlocked) {
-      goTo('txnScreen');
-      goTo('insightScreen');
-      return;
-    }
-    document.getElementById('overlayConsent').classList.add('active');
-  }
-
-  function closeOverlay(id) {
-    document.getElementById(id).classList.remove('active');
-  }
-
-  function showLinking() {
-    closeOverlay('overlayConsent');
-    document.getElementById('overlayLinking').classList.add('active');
-
-    // Animate the link line
-    setTimeout(() => {
-      document.getElementById('linkFill').style.width = '100%';
-    }, 100);
-
-    // Step 2 → 3
-    setTimeout(() => {
-      var s2 = document.getElementById('step2');
-      s2.classList.remove('active'); s2.classList.add('done');
-      document.getElementById('step2icon').outerHTML = '<div class="step-icon done" id="step2icon">✓</div>';
-
-      var s3 = document.getElementById('step3');
-      s3.classList.add('active');
-      document.getElementById('step3icon').outerHTML = '<div class="step-icon spin" id="step3icon" style="border:2px solid var(--blue-lt);border-top-color:var(--blue);border-radius:50%;"></div>';
-    }, 2000);
-
-    // Step 3 → 4
-    setTimeout(() => {
-      var s3 = document.getElementById('step3');
-      s3.classList.remove('active'); s3.classList.add('done');
-      document.getElementById('step3icon').outerHTML = '<div class="step-icon done" id="step3icon">✓</div>';
-
-      var s4 = document.getElementById('step4');
-      s4.classList.add('active');
-      document.getElementById('step4icon').outerHTML = '<div class="step-icon spin" id="step4icon" style="border:2px solid var(--blue-lt);border-top-color:var(--blue);border-radius:50%;"></div>';
-    }, 3800);
-
-    // Done → show success
-    setTimeout(() => {
-      var s4 = document.getElementById('step4');
-      s4.classList.remove('active'); s4.classList.add('done');
-      document.getElementById('step4icon').outerHTML = '<div class="step-icon done" id="step4icon">✓</div>';
-
-      setTimeout(() => {
-        closeOverlay('overlayLinking');
-        document.getElementById('overlaySuccess').classList.add('active');
-        insightUnlocked = true;
-      }, 600);
-    }, 5400);
-  }
-
-  function goToInsight() {
-    closeOverlay('overlaySuccess');
-    goTo('insightScreen');
-  }
-
-  function showEwa() {
-    document.getElementById('overlayEwa').classList.add('active');
-  }
-
-  function showEwaConfirm() {
-    closeOverlay('overlayEwa');
-    document.getElementById('overlayEwaConfirm').classList.add('active');
-  }
+function go(id){
+  document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+}
+function hideOv(id){document.getElementById(id).classList.remove('on');}
+function showDemo1(){
+  document.getElementById('oDemo1').classList.add('on');
+}
+function goToEmployer(){
+  document.getElementById('oDemo1').classList.remove('on');
+  go('sEmployerNotif');
+}
+function approveEmployer(){
+  go('sConfirmed');
+}
+function showSalaryNotif(){
+  document.getElementById('oSalaryNotif').classList.add('on');
+}
+function viewInsight(){
+  hideOv('oSalaryNotif');
+  go('sHome');
+}
+function startJourney(){
+  go('sLoad');
+  var pb=document.getElementById('pb');
+  var sub=document.getElementById('loadSub');
+  setTimeout(function(){pb.style.width='40%';},100);
+  setTimeout(function(){
+    document.getElementById('ls2ic').textContent='✅';
+    document.getElementById('ls2ic').style.background='var(--green-lt)';
+    document.getElementById('ls2').textContent='Done';
+    document.getElementById('ls2').className='ls-st done';
+    document.getElementById('ls3').textContent='Generating…';
+    document.getElementById('ls3').className='ls-st run';
+    document.getElementById('ls3ic').textContent='⏳';
+    document.getElementById('ls3ic').style.background='var(--amber-lt)';
+    sub.textContent='Comparing April vs March payslip…';
+    pb.style.width='78%';
+  },1800);
+  setTimeout(function(){
+    document.getElementById('ls3ic').textContent='✅';
+    document.getElementById('ls3ic').style.background='var(--green-lt)';
+    document.getElementById('ls3').textContent='Done';
+    document.getElementById('ls3').className='ls-st done';
+    sub.textContent='Insight ready!';
+    pb.style.width='100%';
+  },3200);
+  setTimeout(function(){go('sInsight');},4000);
+}
+function finishAdv(){
+  hideOv('oSuccess');
+  // update balance: 42318.40 + 17028.35
+  document.getElementById('homeBalance').textContent = 'R 59,346.75';
+  // prepend advance transaction
+  var txns = document.getElementById('homeTxns');
+  var newTxn = document.createElement('div');
+  newTxn.className = 'txn hi';
+  newTxn.style.borderColor = 'rgba(0,168,120,.4)';
+  newTxn.style.background = 'var(--sage-lt)';
+  newTxn.innerHTML = '<div class="txn-ic" style="background:var(--sage-lt);">&#128184;</div>'
+    + '<div class="txn-inf"><div class="txn-nm">Early pay advance</div><div class="txn-sb">Just now &middot; Sage Payroll</div></div>'
+    + '<div class="txn-r"><div class="txn-am cr" style="color:var(--sage-dk);">+R 17,028.35</div><div class="txn-tag" style="color:var(--sage-dk);background:#B3E8D8;">&#10022; EWA</div></div>';
+  txns.insertBefore(newTxn, txns.firstChild);
+  go('sHome');
+}
+function showAdv(){document.getElementById('oAdv').classList.add('on');}
+function confirmAdv(){
+  hideOv('oAdv');
+  document.getElementById('oSuccess').classList.add('on');
+}
 </script>
 </body>
 </html>
