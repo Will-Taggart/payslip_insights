@@ -302,6 +302,69 @@ body{background:#EDE8E3;min-height:100vh;display:flex;align-items:center;justify
 .disclaimer-ic{font-size:14px;flex-shrink:0;margin-top:1px;}
 .disclaimer-tx{font-size:11px;font-weight:600;color:#666;line-height:1.5;}
 .disclaimer-tx strong{color:#333;font-weight:800;}
+
+/* PROMPT BAR — redesigned prominent guide */
+.prompt-wrap{width:100%;max-width:393px;margin-bottom:14px;display:none;flex-direction:column;align-items:center;gap:0;}
+.prompt-card{width:100%;background:#1A1A2E;border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,.18);}
+.prompt-step{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:3px;}
+.prompt-text{font-size:13px;font-weight:700;color:white;line-height:1.4;}
+.prompt-text strong{color:#7DF5C8;font-weight:900;}
+.prompt-emoji{font-size:22px;flex-shrink:0;}
+.prompt-arrow{width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid #1A1A2E;margin-top:-1px;animation:bounce 1.2s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+@keyframes fadeslide{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
+
+/* RA NUDGE */
+.ra-nudge{margin:0 16px 12px;background:linear-gradient(135deg,#1A1060 0%,#2D1B8E 100%);border-radius:18px;padding:16px;color:white;cursor:pointer;position:relative;overflow:hidden;}
+.ra-nudge::after{content:'';position:absolute;right:-15px;top:-15px;width:80px;height:80px;background:rgba(255,255,255,.06);border-radius:50%;}
+.ra-nudge-lbl{font-size:10px;font-weight:800;opacity:.7;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.ra-nudge-lbl::before{content:'💡';font-size:12px;}
+.ra-nudge-title{font-size:15px;font-weight:900;margin-bottom:6px;letter-spacing:-.2px;line-height:1.3;}
+.ra-nudge-sub{font-size:12px;font-weight:600;opacity:.8;margin-bottom:14px;line-height:1.5;}
+.ra-nudge-row{display:flex;gap:8px;position:relative;z-index:1;}
+.ra-nudge-btn{flex:1;padding:9px 12px;border-radius:12px;font-size:12px;font-weight:800;border:none;cursor:pointer;font-family:inherit;text-align:center;}
+.ra-nudge-btn.yes{background:white;color:#2D1B8E;}
+.ra-nudge-btn.no{background:rgba(255,255,255,.15);color:white;border:1px solid rgba(255,255,255,.25);}
+
+/* INVEST SCREEN */
+.invest-hero{background:linear-gradient(135deg,#1A1060 0%,#2D1B8E 60%,#4C35C8 100%);padding:20px;color:white;flex-shrink:0;position:relative;overflow:hidden;}
+.invest-hero::after{content:'';position:absolute;right:-30px;top:-30px;width:130px;height:130px;background:rgba(255,255,255,.06);border-radius:50%;}
+.inv-lbl{font-size:10px;font-weight:800;opacity:.7;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
+.inv-title{font-size:20px;font-weight:900;margin-bottom:6px;letter-spacing:-.3px;position:relative;z-index:1;}
+.inv-sub{font-size:12px;font-weight:600;opacity:.75;line-height:1.5;position:relative;z-index:1;}
+.inv-tax-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border-radius:20px;padding:5px 12px;font-size:11px;font-weight:800;margin-top:12px;border:1px solid rgba(255,255,255,.25);}
+
+.prod-card{margin:0 16px 12px;background:var(--bg);border:1px solid var(--border);border-radius:18px;overflow:hidden;cursor:pointer;transition:box-shadow .15s;}
+.prod-card:active{box-shadow:0 0 0 2px #2D1B8E;}
+.prod-card-top{padding:16px;display:flex;gap:14px;align-items:flex-start;}
+.prod-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.prod-name{font-size:15px;font-weight:900;color:var(--text);margin-bottom:3px;letter-spacing:-.2px;}
+.prod-tagline{font-size:12px;font-weight:600;color:var(--muted);line-height:1.4;}
+.prod-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.prod-tag{font-size:10px;font-weight:800;border-radius:6px;padding:3px 8px;}
+.prod-bar{height:3px;background:var(--border);}
+.prod-stats{display:flex;border-top:1px solid var(--border);}
+.prod-stat{flex:1;padding:10px 12px;text-align:center;border-right:1px solid var(--border);}
+.prod-stat:last-child{border-right:none;}
+.ps-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;}
+.ps-val{font-size:13px;font-weight:900;color:var(--text);}
+
+/* PRODUCT DETAIL OVERLAY */
+.prod-detail-hero{padding:20px;color:white;position:relative;overflow:hidden;}
+.prod-detail-hero::after{content:'';position:absolute;right:-20px;top:-20px;width:100px;height:100px;background:rgba(255,255,255,.07);border-radius:50%;}
+.pd-icon{font-size:36px;margin-bottom:10px;}
+.pd-name{font-size:22px;font-weight:900;margin-bottom:4px;letter-spacing:-.3px;}
+.pd-sub{font-size:13px;font-weight:600;opacity:.8;line-height:1.5;}
+.pd-stats{display:flex;gap:8px;padding:16px 20px;flex-shrink:0;}
+.pd-stat{flex:1;background:var(--surface);border-radius:12px;padding:12px;text-align:center;border:1px solid var(--border);}
+.pd-stat-lbl{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.pd-stat-val{font-size:16px;font-weight:900;color:var(--text);}
+.pd-section{padding:0 20px 12px;}
+.pd-sec-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px;}
+.pd-bullet{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;}
+.pd-bullet-dot{width:6px;height:6px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.pd-bullet-tx{font-size:13px;font-weight:600;color:var(--text);line-height:1.45;}
+.pd-cta-wrap{padding:12px 20px 28px;}
 </style>
 </head>
 <body>
@@ -312,7 +375,7 @@ body{background:#EDE8E3;min-height:100vh;display:flex;align-items:center;justify
     <div class="exp-outer-hero">
       <div class="exp-outer-pre">Concept demo &mdash; Data &amp; AI Hub</div>
       <div class="exp-outer-title">Sage <span>&times;</span> Bank<br>Open Payroll</div>
-      <div class="exp-outer-sub">What happens when your bank and your payroll provider work togerther for you?</div>
+      <div class="exp-outer-sub">What happens when your bank and your payroll provider finally talk to each other?</div>
     </div>
     <div class="exp-outer-cards">
       <div class="exp-outer-card">
@@ -326,14 +389,14 @@ body{background:#EDE8E3;min-height:100vh;display:flex;align-items:center;justify
         <div class="exp-outer-num" style="background:#EBF2FF;color:#1966D2;">2</div>
         <div>
           <div class="exp-outer-card-title">Banks want new customers — but onboarding is broken</div>
-          <div class="exp-outer-card-desc">Banks are highly incentivised to win, retain and upsell to customers. But when someone switches banks, they still have to manually notify their employer to update payroll with their new banking details. It's friction that costs banks customers.</div>
+          <div class="exp-outer-card-desc">Banks are highly incentivised to win and retain customers. But when someone switches banks, they still have to manually notify their employer to update payroll. It's friction that costs banks customers.</div>
         </div>
       </div>
       <div class="exp-outer-card">
         <div class="exp-outer-num" style="background:#FFF3E0;color:#E07B00;">3</div>
         <div>
           <div class="exp-outer-card-title">Two trusted data sources. Zero connection.</div>
-          <div class="exp-outer-card-desc">Banks hold deeply trusted financial data and form trusted relationships with their customers. Sage holds deeply trusted employment and earnings data about their employees. Right now, these two worlds don't talk enough.</div>
+          <div class="exp-outer-card-desc">Banks hold deeply trusted financial data and form trusted relationships with their customers. Sage holds deeply trusted employment and earnings data about their employees. Right now, these two worlds don't talk.</div>
         </div>
       </div>
     </div>
@@ -356,8 +419,17 @@ body{background:#EDE8E3;min-height:100vh;display:flex;align-items:center;justify
     <div class="disclaimer-tx"><strong>Concept demo &mdash; Data &amp; AI Hub.</strong> This prototype is for illustrative purposes only and does not represent a live product. It was designed by the Sage Data &amp; AI Hub to explore the potential of open payroll integration with banking partners.</div>
   </div>
 
-  <!-- ═══════════ PROMPT BAR ═══════════ -->
-  <div id="promptBar" style="display:none;width:100%;max-width:393px;background:white;border:1.5px solid #E8E8E8;border-radius:14px;padding:12px 16px;margin-bottom:12px;gap:10px;align-items:center;box-shadow:0 2px 12px rgba(0,0,0,.06);transition:opacity .2s ease,transform .2s ease;"></div>
+  <!-- ═══════════ PROMPT GUIDE ═══════════ -->
+  <div class="prompt-wrap" id="promptBar">
+    <div class="prompt-card">
+      <div class="prompt-emoji" id="promptEmoji">👆</div>
+      <div>
+        <div class="prompt-step" id="promptStep">Step 1 of 9</div>
+        <div class="prompt-text" id="promptText">Tap <strong>Yes, connect my account</strong> to begin</div>
+      </div>
+    </div>
+    <div class="prompt-arrow"></div>
+  </div>
 
   <!-- ═══════════ PHONE ═══════════ -->
   <div class="phone" id="phoneShell" style="display:none;">
@@ -608,6 +680,17 @@ body{background:#EDE8E3;min-height:100vh;display:flex;align-items:center;justify
       <!-- Tip -->
       <div class="tip"><div class="tip-ic">&#128161;</div><div class="tip-tx">Your marginal deduction rate was <strong>32%</strong> &mdash; for every R1 of extra income, R0.32 went to tax.</div></div>
 
+      <!-- RA NUDGE -->
+      <div class="ra-nudge" onclick="go('sInvest');setPrompt('sInvest');">
+        <div class="ra-nudge-lbl">Smart Money Tip</div>
+        <div class="ra-nudge-title">You&rsquo;re not using your full retirement tax credit</div>
+        <div class="ra-nudge-sub">We noticed you&rsquo;re paying R1,707 in PAYE this month. A Retirement Annuity could reduce your tax bill &mdash; have you considered an RA?</div>
+        <div class="ra-nudge-row">
+          <button class="ra-nudge-btn yes">Yes, learn more</button>
+          <button class="ra-nudge-btn no" onclick="event.stopPropagation();">Maybe later</button>
+        </div>
+      </div>
+
       <!-- EARLY PAY -->
       <div class="ep-ban" onclick="showAdv()">
         <div class="ep-lbl">&#128184; Early pay access</div>
@@ -624,6 +707,115 @@ body{background:#EDE8E3;min-height:100vh;display:flex;align-items:center;justify
       <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span>Payments</span><div class="nav-dot"></div></div>
       <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><span>Explore</span><div class="nav-dot"></div></div>
       <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
+    </div>
+  </div>
+
+  <!-- ═══ INVEST SCREEN ═══ -->
+  <div class="screen" id="sInvest">
+    <div class="topbar">
+      <button class="back-btn" onclick="go('sInsight');setPrompt('sInsight');"><svg width="8" height="14" viewBox="0 0 8 14" fill="none"><path d="M7 1L1 7l6 6" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Insight</button>
+      <div class="topbar-title">Invest &amp; Save Tax</div>
+      <div style="width:80px;"></div>
+    </div>
+    <div class="invest-hero">
+      <div class="inv-lbl">&#127775; Personalised for you</div>
+      <div class="inv-title">Reduce your tax with a Retirement Annuity</div>
+      <div class="inv-sub">Based on your April payslip, you&rsquo;re contributing R6,000 to pension but could be doing more. RA contributions are tax-deductible up to 27.5% of your income.</div>
+      <div class="inv-tax-chip">&#128200; Up to R3,500/month in potential tax savings</div>
+    </div>
+    <div class="scroll" style="padding:12px 0 0;">
+      <div style="padding:0 20px 10px;font-size:12px;font-weight:700;color:var(--muted);">Choose a product to learn more</div>
+
+      <!-- Product 1 -->
+      <div class="prod-card" onclick="showProd('p1')">
+        <div class="prod-card-top">
+          <div class="prod-icon" style="background:#EEF2FF;">&#128188;</div>
+          <div style="flex:1;">
+            <div class="prod-name">Allan Gray RA</div>
+            <div class="prod-tagline">Flexible monthly contributions. Invest in a range of funds.</div>
+            <div class="prod-tags">
+              <span class="prod-tag" style="background:#EEF2FF;color:#4F46E5;">Tax deductible</span>
+              <span class="prod-tag" style="background:var(--green-lt);color:var(--sage-dk);">Low min R500/m</span>
+            </div>
+          </div>
+        </div>
+        <div class="prod-bar"></div>
+        <div class="prod-stats">
+          <div class="prod-stat"><div class="ps-lbl">Avg return</div><div class="ps-val" style="color:var(--green);">11.2% p.a.</div></div>
+          <div class="prod-stat"><div class="ps-lbl">Risk</div><div class="ps-val">Moderate</div></div>
+          <div class="prod-stat"><div class="ps-lbl">Min term</div><div class="ps-val">To age 55</div></div>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="prod-card" onclick="showProd('p2')">
+        <div class="prod-card-top">
+          <div class="prod-icon" style="background:#FFF7ED;">&#127775;</div>
+          <div style="flex:1;">
+            <div class="prod-name">Sygnia Skeleton RA</div>
+            <div class="prod-tagline">Ultra-low fees. Index-tracking retirement fund.</div>
+            <div class="prod-tags">
+              <span class="prod-tag" style="background:#EEF2FF;color:#4F46E5;">Tax deductible</span>
+              <span class="prod-tag" style="background:var(--amber-lt);color:var(--amber);">Lowest fees</span>
+            </div>
+          </div>
+        </div>
+        <div class="prod-bar"></div>
+        <div class="prod-stats">
+          <div class="prod-stat"><div class="ps-lbl">Avg return</div><div class="ps-val" style="color:var(--green);">12.4% p.a.</div></div>
+          <div class="prod-stat"><div class="ps-lbl">Risk</div><div class="ps-val">Moderate</div></div>
+          <div class="prod-stat"><div class="ps-lbl">Min contrib</div><div class="ps-val">R250/m</div></div>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="prod-card" onclick="showProd('p3')">
+        <div class="prod-card-top">
+          <div class="prod-icon" style="background:var(--green-lt);">&#127807;</div>
+          <div style="flex:1;">
+            <div class="prod-name">Coronation RA</div>
+            <div class="prod-tagline">Actively managed. Long-term wealth building.</div>
+            <div class="prod-tags">
+              <span class="prod-tag" style="background:#EEF2FF;color:#4F46E5;">Tax deductible</span>
+              <span class="prod-tag" style="background:var(--purple-lt);color:var(--purple);">Active mgmt</span>
+            </div>
+          </div>
+        </div>
+        <div class="prod-bar"></div>
+        <div class="prod-stats">
+          <div class="prod-stat"><div class="ps-lbl">Avg return</div><div class="ps-val" style="color:var(--green);">10.8% p.a.</div></div>
+          <div class="prod-stat"><div class="ps-lbl">Risk</div><div class="ps-val">Moderate+</div></div>
+          <div class="prod-stat"><div class="ps-lbl">Min contrib</div><div class="ps-val">R500/m</div></div>
+        </div>
+      </div>
+
+      <div style="margin:4px 16px 20px;background:var(--blue-lt);border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;border:1px solid #C2D8FA;">
+        <div style="font-size:16px;flex-shrink:0;">&#128274;</div>
+        <div style="font-size:12px;font-weight:600;color:#1045A0;line-height:1.55;">Contributions are deductible up to <strong>27.5% of your taxable income</strong> (max R350,000/year). Based on your salary, you could save up to <strong>R3,500/month</strong> in tax.</div>
+      </div>
+    </div>
+    <div class="nav">
+      <div class="nav-it" onclick="go('sHome');setPrompt('sHome');"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z"/><path d="M9 21V12h6v9"/></svg><span>Home</span><div class="nav-dot"></div></div>
+      <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span>Payments</span><div class="nav-dot"></div></div>
+      <div class="nav-it on"><svg viewBox="0 0 24 24" fill="none" stroke="#2D1B8E" stroke-width="2.2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span style="color:#2D1B8E;">Invest</span><div class="nav-dot" style="background:#2D1B8E;display:block;"></div></div>
+      <div class="nav-it"><svg viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.58-7 8-7s8 3 8 7"/></svg><span>Account</span><div class="nav-dot"></div></div>
+    </div>
+  </div>
+
+  <!-- ═══ PRODUCT DETAIL OVERLAY ═══ -->
+  <div class="overlay center" id="oProd">
+    <div class="sheet rd" style="max-height:92%;">
+      <div class="sh-handle"></div>
+      <div class="prod-detail-hero" id="pdHero"></div>
+      <div class="pd-stats" id="pdStats"></div>
+      <div class="scroll" style="max-height:340px;">
+        <div class="pd-section" id="pdBenefits"></div>
+        <div class="pd-section" id="pdConsider"></div>
+      </div>
+      <div class="pd-cta-wrap">
+        <button class="btn full" id="pdCta" style="background:#2D1B8E;">Get started &mdash; apply now</button>
+        <button class="btn-ghost" style="margin:8px 0 0;width:100%;" onclick="hideOv('oProd')">Back to products</button>
+      </div>
     </div>
   </div>
 
@@ -702,31 +894,42 @@ body{background:#EDE8E3;min-height:100vh;display:flex;align-items:center;justify
 </div><!-- end outer -->
 
 <script>
+var stepCount = {
+  sOnboard:1, sConsent:2, oDemo1:3, sEmployerNotif:4,
+  sConfirmed:5, oSalaryNotif:6, sHome:7, sLoad:8,
+  sInsight:9, sInvest:'★', oAdv:10, oSuccess:11
+};
+var totalSteps = 11;
+
 var prompts = {
   sOnboard:     { emoji:'👆', text:'Tap <strong>Yes, connect my account</strong> to begin the journey' },
-  sConsent:     { emoji:'👆', text:'Review the consent items, then tap <strong>I agree — link my payslip</strong>' },
-  oDemo1:       { emoji:'🎬', text:'This explains what happens behind the scenes — tap <strong>See the employer\'s Sage inbox</strong>' },
+  sConsent:     { emoji:'👆', text:'Review what will be shared, then tap <strong>I agree — connect my account</strong>' },
+  oDemo1:       { emoji:'🎬', text:'This explains what happens behind the scenes — tap <strong>See the employer\'s Sage inbox →</strong>' },
   sEmployerNotif:{ emoji:'👆', text:'You\'re now in the employer\'s Sage HR inbox — tap <strong>Approve update</strong>' },
-  sConfirmed:   { emoji:'⏩', text:'Payroll is connected! Tap <strong>Fast-forward to payday</strong> to jump ahead' },
-  oSalaryNotif: { emoji:'💸', text:'Your salary just landed — tap <strong>View payment</strong> to see it in the app' },
+  sConfirmed:   { emoji:'⏩', text:'Payroll connected! Tap <strong>Fast-forward to payday</strong>' },
+  oSalaryNotif: { emoji:'💸', text:'Your salary just landed — tap <strong>View payment</strong>' },
   sHome:        { emoji:'👆', text:'Tap the <strong>Will Bakery</strong> salary transaction to see your pay insight' },
   sLoad:        { emoji:'⏳', text:'Generating your insight from Sage payroll data…' },
-  sInsight:     { emoji:'👆', text:'Scroll down to explore your insight, then tap <strong>Access now</strong> for early pay' },
-  oAdv:         { emoji:'👆', text:'Review the advance details, then tap <strong>Confirm</strong> to receive the payment' },
+  sInsight:     { emoji:'👇', text:'Scroll down — tap <strong>Yes, learn more</strong> on the RA nudge, or <strong>Access now</strong> for early pay' },
+  sInvest:      { emoji:'👆', text:'Tap any product card to explore it, or scroll to see all options' },
+  oAdv:         { emoji:'👆', text:'Review the advance details then tap <strong>Confirm</strong> to receive payment' },
   oSuccess:     { emoji:'🎉', text:'Done! Tap <strong>Done</strong> to see the payment land in your account' }
 };
 
 function setPrompt(key) {
-  var bar = document.getElementById('promptBar');
+  var wrap = document.getElementById('promptBar');
+  var emojiEl = document.getElementById('promptEmoji');
+  var stepEl  = document.getElementById('promptStep');
+  var textEl  = document.getElementById('promptText');
   var p = prompts[key];
-  if (!p || !bar) return;
-  bar.style.opacity = '0';
-  bar.style.transform = 'translateY(6px)';
+  if (!p || !wrap) return;
+  wrap.style.opacity = '0';
   setTimeout(function(){
-    bar.innerHTML = '<span style="font-size:16px;flex-shrink:0;">' + p.emoji + '</span>'
-      + '<span style="font-size:12px;font-weight:600;color:#333;line-height:1.45;">' + p.text + '</span>';
-    bar.style.opacity = '1';
-    bar.style.transform = 'translateY(0)';
+    emojiEl.textContent = p.emoji;
+    var s = stepCount[key];
+    stepEl.textContent = s ? 'Step ' + s + (typeof s==='number' ? ' of '+totalSteps : '') : '';
+    textEl.innerHTML = p.text;
+    wrap.style.opacity = '1';
   }, 150);
 }
 
@@ -810,9 +1013,61 @@ function startDemo(){
   document.getElementById('explainerSection').style.display='none';
   document.getElementById('demoSection').style.display='flex';
   document.getElementById('phoneShell').style.display='flex';
-  document.getElementById('promptBar').style.display='flex';
+  var pb = document.getElementById('promptBar');
+  pb.style.display='flex';
+  pb.style.opacity='1';
   setPrompt('sOnboard');
   document.getElementById('demoSection').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+var products = {
+  p1: {
+    name:'Allan Gray RA', icon:'💼', bg:'linear-gradient(135deg,#1A237E,#3949AB)',
+    tagline:'South Africa\'s most trusted independent fund manager',
+    stats:[{l:'Avg return',v:'11.2% p.a.'},{l:'Min contrib',v:'R500/m'},{l:'Risk',v:'Moderate'}],
+    benefits:['Tax deduction of up to 27.5% of taxable income','Access to a range of equity, bond and balanced funds','Flexible contributions — increase or decrease anytime','Lump-sum and monthly contribution options'],
+    consider:['Funds are locked in until age 55 (retirement preservation rules)','Performance is not guaranteed and depends on fund choice','Early withdrawal attracts penalties and tax consequences']
+  },
+  p2: {
+    name:'Sygnia Skeleton RA', icon:'⭐', bg:'linear-gradient(135deg,#B45309,#D97706)',
+    tagline:'Index-tracking RA with the lowest fees in South Africa',
+    stats:[{l:'Avg return',v:'12.4% p.a.'},{l:'Min contrib',v:'R250/m'},{l:'TER',v:'0.47%'}],
+    benefits:['Industry-leading low total expense ratio (TER) of 0.47%','Passively tracks major indices — no fund manager bias','Start with as little as R250 per month','Same tax benefits as any other RA product'],
+    consider:['Returns mirror the index — no active downside protection','Index funds can drop significantly in market corrections','Minimum term applies to retirement age 55']
+  },
+  p3: {
+    name:'Coronation RA', icon:'🌿', bg:'linear-gradient(135deg,#065F46,#059669)',
+    tagline:'Actively managed for long-term capital growth',
+    stats:[{l:'Avg return',v:'10.8% p.a.'},{l:'Min contrib',v:'R500/m'},{l:'Risk',v:'Moderate+'}],
+    benefits:['Active management seeks to outperform the market over time','Experienced investment team with a 30-year track record','Multiple fund options from conservative to aggressive growth','Full tax deductibility on all contributions'],
+    consider:['Higher fees than passive alternatives','Active management does not guarantee outperformance','Higher risk profile — suited to investors with 10+ year horizons']
+  }
+};
+
+function showProd(id) {
+  var p = products[id];
+  if (!p) return;
+  document.getElementById('pdHero').style.background = p.bg;
+  document.getElementById('pdHero').innerHTML =
+    '<div style="position:relative;z-index:1;">'
+    +'<div class="pd-icon">'+p.icon+'</div>'
+    +'<div class="pd-name">'+p.name+'</div>'
+    +'<div class="pd-sub">'+p.tagline+'</div>'
+    +'</div>';
+  document.getElementById('pdStats').innerHTML = p.stats.map(function(s){
+    return '<div class="pd-stat"><div class="pd-stat-lbl">'+s.l+'</div><div class="pd-stat-val">'+s.v+'</div></div>';
+  }).join('');
+  document.getElementById('pdBenefits').innerHTML =
+    '<div class="pd-sec-title">What you get</div>'
+    + p.benefits.map(function(b){
+      return '<div class="pd-bullet"><div class="pd-bullet-dot" style="background:var(--green);"></div><div class="pd-bullet-tx">'+b+'</div></div>';
+    }).join('');
+  document.getElementById('pdConsider').innerHTML =
+    '<div class="pd-sec-title">Things to consider</div>'
+    + p.consider.map(function(c){
+      return '<div class="pd-bullet"><div class="pd-bullet-dot" style="background:var(--amber);"></div><div class="pd-bullet-tx">'+c+'</div></div>';
+    }).join('');
+  document.getElementById('oProd').classList.add('on');
 }
 </script>
 </body>
